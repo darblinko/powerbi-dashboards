@@ -216,6 +216,17 @@
     const rrBase =
       sum(r => r.cat === 2 && r.m >= 24 && r.m <= 27, 'ret') / sum(r => r.cat === 2 && r.m >= 24 && r.m <= 27, 'ord');
     const tx = m => sum(r => D.STATES[r.st].abbr === 'TX' && r.m === m, 'rev');
+    const monthRevenue = D.MONTHS.map(month => sum(r => r.m === month.idx, 'rev'));
+    const meanRevenue = monthRevenue.reduce((a, b) => a + b, 0) / monthRevenue.length;
+    const decembers = D.MONTHS.filter(month => month.month === 12);
+    const peakYears = decembers
+      .map(month => month.year)
+      .filter(year => {
+        const ranked = D.MONTHS.filter(month => month.year === year).sort(
+          (a, b) => monthRevenue[b.idx] - monthRevenue[a.idx]
+        );
+        return ranked.slice(0, 2).every(month => month.month >= 11);
+      });
     const items = [
       [
         'Anomaly',
@@ -249,7 +260,15 @@
       ],
       [
         'Seasonality',
-        'November and December carry the highest revenue in each year of data; December is 1.6x the monthly average.'
+        'November and December are the two highest revenue months in ' +
+          peakYears.join(', ') +
+          '. December revenue is ' +
+          decembers.map(month => (monthRevenue[month.idx] / meanRevenue).toFixed(2) + 'x').join(', ') +
+          ' the ' +
+          D.MONTHS.length +
+          '-month average in ' +
+          decembers.map(month => month.year).join(', ') +
+          '.'
       ]
     ];
     F.dialog(

@@ -270,7 +270,7 @@
           compute: api => ({
             value: api.S.viewAs ? api.S.role : 'Owner (no role applied)',
             fmt: 'text',
-            sub: '<span>Evaluated by the Power BI Service</span>'
+            sub: '<span>Evaluated in the browser filter context</span>'
           })
         }),
         kpi('p4-k-p', 326, 60, 310, 76, 'Plants visible', null, {
