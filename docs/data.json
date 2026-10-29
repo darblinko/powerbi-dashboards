@@ -1,0 +1,340 @@
+{
+  "meta": {
+    "repo": "pbi-portfolio",
+    "revision": "713a321",
+    "measured": "2026-10-28"
+  },
+  "charts": [
+    {
+      "name": "fact-rows",
+      "type": "stats",
+      "title": "Generated fact rows per dashboard",
+      "subtitle": "Row counts after each data.js runs; every row is fictional",
+      "source": "docs/*/data.js via node tools/build-data.mjs",
+      "alt": "Fact row counts: Online retailer 17,100, Auto parts 17,606, Supplements 3,599, Device quality 4,506.",
+      "tiles": [
+        {
+          "label": "Online retailer",
+          "value": "17,100",
+          "note": "2 tables, 36 months"
+        },
+        {
+          "label": "Auto parts",
+          "value": "17,606",
+          "note": "7 tables, 12 months"
+        },
+        {
+          "label": "Supplements",
+          "value": "3,599",
+          "note": "3 tables, 90 weeks"
+        },
+        {
+          "label": "Device quality",
+          "value": "4,506",
+          "note": "5 tables, 33 months"
+        }
+      ]
+    },
+    {
+      "name": "retail-revenue",
+      "type": "line",
+      "title": "Online retailer revenue by month, thousands",
+      "subtitle": "Sales table, Oct 2023 to Sep 2026, fictional currency units",
+      "source": "docs/online-retailer/data.js via node tools/build-data.mjs",
+      "alt": "Monthly revenue over 36 months, with peaks in November and December of each year.",
+      "format": "number",
+      "min": 0,
+      "x": [
+        "Oct 2023",
+        "Nov 2023",
+        "Dec 2023",
+        "Jan 2024",
+        "Feb 2024",
+        "Mar 2024",
+        "Apr 2024",
+        "May 2024",
+        "Jun 2024",
+        "Jul 2024",
+        "Aug 2024",
+        "Sep 2024",
+        "Oct 2024",
+        "Nov 2024",
+        "Dec 2024",
+        "Jan 2025",
+        "Feb 2025",
+        "Mar 2025",
+        "Apr 2025",
+        "May 2025",
+        "Jun 2025",
+        "Jul 2025",
+        "Aug 2025",
+        "Sep 2025",
+        "Oct 2025",
+        "Nov 2025",
+        "Dec 2025",
+        "Jan 2026",
+        "Feb 2026",
+        "Mar 2026",
+        "Apr 2026",
+        "May 2026",
+        "Jun 2026",
+        "Jul 2026",
+        "Aug 2026",
+        "Sep 2026"
+      ],
+      "series": [
+        {
+          "name": "Revenue",
+          "values": [
+            11134,
+            15780,
+            19000,
+            8754,
+            8518,
+            9943,
+            10212,
+            11821,
+            11357,
+            11392,
+            12389,
+            11745,
+            12575,
+            18074,
+            21332,
+            9884,
+            9452,
+            11249,
+            11613,
+            13467,
+            11256,
+            13397,
+            13995,
+            13433,
+            14408,
+            20730,
+            24967,
+            11642,
+            10639,
+            12836,
+            13346,
+            15720,
+            14855,
+            15330,
+            17219,
+            15126
+          ]
+        }
+      ]
+    },
+    {
+      "name": "supplier-ppm",
+      "type": "line",
+      "title": "Incoming defects per million parts by month",
+      "subtitle": "Northwind Castings against the other 13 suppliers, Receipts table",
+      "source": "docs/auto-parts-supplier/data.js via node tools/build-data.mjs",
+      "alt": "Northwind Castings defect PPM rises from March to May 2026 while the other suppliers stay level.",
+      "format": "number",
+      "min": 0,
+      "x": [
+        "Oct 2025",
+        "Nov 2025",
+        "Dec 2025",
+        "Jan 2026",
+        "Feb 2026",
+        "Mar 2026",
+        "Apr 2026",
+        "May 2026",
+        "Jun 2026",
+        "Jul 2026",
+        "Aug 2026",
+        "Sep 2026"
+      ],
+      "series": [
+        {
+          "name": "Northwind",
+          "values": [
+            435,
+            503,
+            374,
+            636,
+            387,
+            2655,
+            2469,
+            2189,
+            430,
+            262,
+            350,
+            441
+          ]
+        },
+        {
+          "name": "Others",
+          "values": [
+            212,
+            228,
+            236,
+            209,
+            228,
+            218,
+            196,
+            236,
+            210,
+            227,
+            221,
+            184
+          ]
+        }
+      ]
+    },
+    {
+      "name": "batch-disposition",
+      "type": "hbar",
+      "title": "Supplement batches by disposition",
+      "subtitle": "3,214 batches over 90 weeks, Batches table",
+      "source": "docs/supplement-cmo/data.js via node tools/build-data.mjs",
+      "alt": "Released 3042, Released with deviation 102, On hold 40, Rejected 30.",
+      "format": "number",
+      "data": [
+        {
+          "label": "Released",
+          "value": 3042
+        },
+        {
+          "label": "Released with deviation",
+          "value": 102
+        },
+        {
+          "label": "On hold",
+          "value": 40
+        },
+        {
+          "label": "Rejected",
+          "value": 30
+        }
+      ]
+    },
+    {
+      "name": "model-b-complaints",
+      "type": "line",
+      "title": "Infusion Pump Model B complaints by month",
+      "subtitle": "Premature depletion against all other failure modes, Complaints table",
+      "source": "docs/device-quality/data.js via node tools/build-data.mjs",
+      "alt": "Premature depletion complaints rise in July to September 2025, the anomaly planted in data.js.",
+      "format": "number",
+      "min": 0,
+      "x": [
+        "Jan 2024",
+        "Feb 2024",
+        "Mar 2024",
+        "Apr 2024",
+        "May 2024",
+        "Jun 2024",
+        "Jul 2024",
+        "Aug 2024",
+        "Sep 2024",
+        "Oct 2024",
+        "Nov 2024",
+        "Dec 2024",
+        "Jan 2025",
+        "Feb 2025",
+        "Mar 2025",
+        "Apr 2025",
+        "May 2025",
+        "Jun 2025",
+        "Jul 2025",
+        "Aug 2025",
+        "Sep 2025",
+        "Oct 2025",
+        "Nov 2025",
+        "Dec 2025",
+        "Jan 2026",
+        "Feb 2026",
+        "Mar 2026",
+        "Apr 2026",
+        "May 2026",
+        "Jun 2026",
+        "Jul 2026",
+        "Aug 2026",
+        "Sep 2026"
+      ],
+      "series": [
+        {
+          "name": "Depletion",
+          "values": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            2,
+            1,
+            1,
+            1,
+            2,
+            1,
+            1,
+            1,
+            0,
+            2,
+            1,
+            1,
+            0,
+            35,
+            73,
+            42,
+            4,
+            0,
+            0,
+            1,
+            1,
+            1,
+            1,
+            0,
+            0,
+            2,
+            1,
+            0
+          ]
+        },
+        {
+          "name": "Other modes",
+          "values": [
+            14,
+            16,
+            8,
+            17,
+            11,
+            14,
+            9,
+            7,
+            14,
+            11,
+            20,
+            8,
+            9,
+            17,
+            21,
+            17,
+            13,
+            15,
+            15,
+            9,
+            17,
+            14,
+            8,
+            25,
+            22,
+            21,
+            12,
+            13,
+            15,
+            16,
+            14,
+            12,
+            12
+          ]
+        }
+      ]
+    }
+  ]
+}

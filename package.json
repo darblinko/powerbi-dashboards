@@ -3,13 +3,22 @@
   "version": "1.0.0",
   "private": true,
   "description": "Vanilla JavaScript reproductions of Power BI report features, with seeded fictional data.",
+  "author": "Mitchell Foutz",
   "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/darblinko/pbi-portfolio.git"
+  },
   "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "lint": "eslint . && prettier --check .",
     "format": "prettier --write .",
-    "test": "node --test tests/",
-    "smoke": "node tests/smoke.mjs"
+    "test": "node --test tests/*.test.mjs",
+    "smoke": "node tests/smoke.mjs",
+    "build:data": "node tools/build-data.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",
