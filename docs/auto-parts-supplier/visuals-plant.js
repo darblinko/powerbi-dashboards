@@ -60,7 +60,7 @@
         (good ? 'ok' : 'bad') +
         '">' +
         (gap >= 0 ? '+' : '') +
-        M.fmt(gap, (res.fmt || m.fmt) === 'pct' ? 'pct' : res.fmt || m.fmt) +
+        M.fmt(gap, res.fmt || m.fmt) +
         '</span>';
     }
     api.el.innerHTML =
@@ -119,7 +119,7 @@
         series: [
           Object.assign({}, geom, {
             type: 'gauge',
-            progress: { show: true, width: 20, itemStyle: { color: value >= target ? cc.COLORS[0] : cc.COLORS[0] } },
+            progress: { show: true, width: 20, itemStyle: { color: cc.COLORS[0] } },
             axisLine: { lineStyle: { width: 20, color: [[1, '#E6E6E6']] } },
             pointer: { show: false },
             axisTick: { show: false },

@@ -153,9 +153,6 @@
       delete charts[k];
     });
   }
-  function resizeAll() {
-    Object.keys(charts).forEach(k => charts[k].resize());
-  }
   function bindBlankClear(c, vid) {
     if (c.__blankBound) return;
     c.__blankBound = true;
@@ -190,10 +187,6 @@
   function hideTip() {
     if (tipEl) tipEl.style.display = 'none';
   }
-  function tipElement() {
-    return tipEl;
-  }
-
   /* Menus and dialogs, positioned in screen space outside the scaled page. */
   let menuEl = null;
   function closeMenu() {
@@ -562,12 +555,10 @@
     highlightSeries,
     chart,
     disposeAll,
-    resizeAll,
     bindBlankClear,
     showTip,
     moveTip,
     hideTip,
-    tipElement,
     openMenu,
     closeMenu,
     dialog,

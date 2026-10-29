@@ -138,9 +138,7 @@
     const S = api.S;
     const body = M.ROLES.map(
       r =>
-        '<tr class="' +
-        (r.name === S.role ? '' : '') +
-        '"><td>' +
+        '<tr><td>' +
         (r.name === S.role
           ? '<span class="ico circle" style="background:#117865"></span><b>' + PBI.esc(r.name) + '</b>'
           : '<span class="ico"></span>' + PBI.esc(r.name)) +

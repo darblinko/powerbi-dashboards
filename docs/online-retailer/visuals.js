@@ -307,7 +307,7 @@
               axisLabel: Object.assign({}, F.axisLabel, {
                 interval: 0,
                 fontSize: keys.length > 18 ? 9 : 11,
-                rotate: keys.length > 18 ? 0 : 0,
+                rotate: 0,
                 formatter: v => (keys.length > 14 && field === 'ym' ? v.replace(' 20', " '") : v)
               })
             }),

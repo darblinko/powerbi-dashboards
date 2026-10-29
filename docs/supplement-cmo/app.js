@@ -57,9 +57,6 @@ const LEGEND = {
   textStyle: { color: '#605E5C', fontSize: 10, fontFamily: FONT }
 };
 const isCtrl = p => !!(p && p.event && p.event.event && (p.event.event.ctrlKey || p.event.event.metaKey));
-function fade(color, opacity) {
-  return { color, opacity };
-}
 
 function chartFor(vid, el) {
   if (!charts[vid] || charts[vid].isDisposed()) {
@@ -94,11 +91,6 @@ function opacityFor(vid, key) {
   const s = isKeySelected(vid, key);
   return s === null || s ? 1 : 0.4;
 }
-function partialSelected(vid, key) {
-  if (!S.selection || S.selection.source !== vid) return null;
-  return S.selection.keys.some(k => Object.keys(key).every(f => k[f] === undefined || k[f] === key[f]));
-}
-
 /* ---------- drill ---------- */
 function drillAction(vid, action) {
   const d = drillState(vid);

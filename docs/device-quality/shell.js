@@ -119,7 +119,7 @@
         .map(
           id =>
             '<div class="pp-item' +
-            (id === S.page || (S.page === 'detail' && id === S.prevPage && false) ? ' on' : '') +
+            (id === S.page ? ' on' : '') +
             '" data-page="' +
             id +
             '">' +

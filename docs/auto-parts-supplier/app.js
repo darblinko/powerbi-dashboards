@@ -457,8 +457,7 @@
   function wireChrome() {
     document.querySelectorAll('[data-icon]').forEach(el => {
       const svg = icon(el.dataset.icon, el.classList.contains('chev') || el.classList.contains('crumb-chev') ? 12 : 16);
-      if (el.classList.contains('rail-item')) el.insertAdjacentHTML('afterbegin', svg);
-      else el.insertAdjacentHTML('afterbegin', svg);
+      el.insertAdjacentHTML('afterbegin', svg);
     });
     document.querySelectorAll('#actionbar [data-menu], #statusbar [data-menu]').forEach(b =>
       b.addEventListener('click', ev => {

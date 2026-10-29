@@ -254,9 +254,6 @@
         return String(v);
     }
   }
-  function measureFmt(name) {
-    return MEASURES[name] ? MEASURES[name].fmt : 'num';
-  }
 
   window.PBI_MODEL = Object.freeze({
     THEME,
@@ -274,7 +271,6 @@
     filterRows,
     groupBy,
     fmt,
-    measureFmt,
     compact
   });
 })();

@@ -535,7 +535,6 @@
     TODAY,
     LAST_WEEK,
     LAST_MONTH,
-    util: { makeRandom, hashString, dayOf, partsOf, fmtDate, MS_DAY },
-    constants: { MFG_DAYS, DISSOLUTION_FORMS }
+    util: { makeRandom, hashString, dayOf, partsOf, fmtDate }
   };
 })();

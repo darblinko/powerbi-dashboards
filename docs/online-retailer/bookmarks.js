@@ -141,5 +141,5 @@
     el.querySelector('.bb-close').addEventListener('click', closeBar);
   }
 
-  window.BOOKMARKS = { LIST, apply, menuItems, renderBar, openBar, closeBar, step, isOpen: () => barOpen };
+  window.BOOKMARKS = { LIST, apply, menuItems, renderBar, openBar, closeBar, step };
 })();
