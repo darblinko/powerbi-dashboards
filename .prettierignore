@@ -1,0 +1,7 @@
+node_modules/
+package-lock.json
+# Dashboard stylesheets keep one rule per line.
+*.css
+# Shared landing-page files copied unchanged from the publish kit.
+docs/charts.js
+docs/figures/

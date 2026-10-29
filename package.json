@@ -1,0 +1,20 @@
+{
+  "name": "pbi-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Vanilla JavaScript reproductions of Power BI report features, with seeded fictional data.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "scripts": {
+    "lint": "eslint . && prettier --check .",
+    "format": "prettier --write .",
+    "test": "node --test tests/",
+    "smoke": "node tests/smoke.mjs"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.5",
+    "eslint": "^9.39.5",
+    "globals": "^17.13.0",
+    "prettier": "^3.9.10"
+  }
+}
