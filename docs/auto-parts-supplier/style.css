@@ -27,7 +27,6 @@ button { font-family: var(--font); color: inherit; }
 .ab-search { margin-left: auto; display: flex; align-items: center; gap: 8px; width: 300px; height: 28px; background: #FFFFFF; color: var(--text2); border-radius: 4px; padding: 0 10px; }
 .ab-search input { border: 0; outline: 0; font-family: var(--font); font-size: 13px; width: 100%; }
 .ab-right { margin-left: auto; display: flex; align-items: center; }
-.ab-trial { font-size: 12px; color: #C8C6C4; padding-right: 8px; }
 .ab-avatar { width: 28px; height: 28px; border-radius: 50%; background: #8E6BB4; color: #FFFFFF; font-size: 11px; font-weight: 600; display: flex; align-items: center; justify-content: center; margin-left: 6px; }
 
 #actionbar { height: 40px; border-bottom: 1px solid var(--line); display: flex; align-items: center; padding: 0 8px; gap: 2px; background: #FFFFFF; }

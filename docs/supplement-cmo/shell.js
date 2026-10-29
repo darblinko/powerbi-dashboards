@@ -5,7 +5,7 @@
     ['home', 'Home'],
     ['create', 'Create'],
     ['browse', 'Browse'],
-    ['onelake', 'OneLake'],
+    ['onelake', 'Data hub'],
     ['apps', 'Apps'],
     ['workspaces', 'Workspaces']
   ];

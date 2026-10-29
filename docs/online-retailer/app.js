@@ -17,7 +17,7 @@
     const f = document.createElement('div');
     f.className = 'page-footer';
     f.innerHTML =
-      '<span>Sample data generated for demonstration. Not drawn from any real system.</span>' +
+      '<span>Sample data generated for demonstration. Not drawn from any real system. Not affiliated with Microsoft.</span>' +
       '<span>Tables: Sales (8,100 rows), Customers (9,000 rows), Date, Product, Channel, Device, Geography</span>';
     pageEl.appendChild(f);
   }

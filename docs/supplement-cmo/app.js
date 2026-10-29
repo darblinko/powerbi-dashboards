@@ -252,7 +252,8 @@ function buildPage() {
   for (const v of pageVisuals()) page.appendChild(buildFrame(v));
   const foot = document.createElement('div');
   foot.className = 'page-foot';
-  foot.textContent = 'Sample data generated for demonstration. Not drawn from any real system.';
+  foot.textContent =
+    'Sample data generated for demonstration. Not drawn from any real system. Not affiliated with Microsoft.';
   page.appendChild(foot);
   const back = document.createElement('button');
   back.className = 'focus-back';

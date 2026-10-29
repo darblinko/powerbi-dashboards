@@ -70,13 +70,13 @@
     document.getElementById('appbar').innerHTML =
       '<button class="ab-waffle" aria-label="App launcher">' +
       ic('waffle') +
-      '</button><span class="ab-brand">Power BI</span>' +
+      '</button><span class="ab-brand">Dashboard Demo</span>' +
       '<span class="ab-crumb"><a>Sales Analytics</a><span class="ab-sep">&#8250;</span><span>E-Commerce Performance</span>' +
       '<span class="ab-sens">General</span></span>' +
       '<div class="ab-search">' +
       ic('search', 14) +
       '<input placeholder="Search" aria-label="Search"></div>' +
-      '<div class="ab-right"><span class="ab-trial">Trial: 54 days left</span>' +
+      '<div class="ab-right">' +
       ['bell', 'gear', 'download', 'help']
         .map(k => '<button class="ab-icon" aria-label="' + k + '">' + ic(k) + '</button>')
         .join('') +
@@ -87,7 +87,7 @@
       ['home', 'Home'],
       ['create', 'Create'],
       ['browse', 'Browse'],
-      ['onelake', 'OneLake'],
+      ['onelake', 'Data hub'],
       ['apps', 'Apps'],
       ['workspaces', 'Workspaces']
     ];
@@ -119,7 +119,7 @@
       btn('file', 'File', 'act-file', true) +
       btn('export', 'Export', 'act-export', true) +
       btn('share', 'Share', 'act-share') +
-      btn('teams', 'Chat in Teams', 'act-teams') +
+      btn('teams', 'Chat', 'act-teams') +
       btn('insights', 'Get insights', 'act-insights') +
       btn('subscribe', 'Subscribe', 'act-sub') +
       btn('edit', 'Edit', 'act-edit') +
@@ -153,7 +153,7 @@
     on('act-export', el =>
       F.openMenu(
         el,
-        ['Analyze in Excel', 'PowerPoint', 'PDF'].map(l => ({
+        ['Analyze in spreadsheet', 'Slides', 'PDF'].map(l => ({
           label: l,
           action: () =>
             F.toast('Export to ' + l + ' is not available in this demonstration. Use Export data in a visual menu.')

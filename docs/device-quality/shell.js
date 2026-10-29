@@ -14,7 +14,7 @@
       '<div class="tb-left"><button class="tb-waffle" title="App launcher">' +
       icon('waffle', 16) +
       '</button>' +
-      '<span class="tb-brand">Power BI</span><span class="tb-sep"></span>' +
+      '<span class="tb-brand">Dashboard Demo</span><span class="tb-sep"></span>' +
       '<span class="tb-crumb"><a>' +
       WORKSPACE +
       '</a>' +
@@ -40,7 +40,7 @@
       ['file', 'File', true],
       ['exportI', 'Export', true],
       ['share', 'Share'],
-      ['teams', 'Chat in Teams'],
+      ['teams', 'Chat'],
       ['insights', 'Get insights'],
       ['subscribe', 'Subscribe to report'],
       ['edit', 'Edit']
@@ -76,7 +76,7 @@
       ['home', 'Home'],
       ['create', 'Create'],
       ['browse', 'Browse'],
-      ['onelake', 'OneLake'],
+      ['onelake', 'Data hub'],
       ['apps', 'Apps'],
       ['workspaces', 'Workspaces'],
       ['report', 'Device Quality']
@@ -228,8 +228,8 @@
         break;
       case 'Export':
         at([
-          { label: 'Analyze in Excel', disabled: true },
-          { label: 'PowerPoint', disabled: true },
+          { label: 'Analyze in spreadsheet', disabled: true },
+          { label: 'Slides', disabled: true },
           { label: 'PDF', action: () => window.print() }
         ]);
         break;

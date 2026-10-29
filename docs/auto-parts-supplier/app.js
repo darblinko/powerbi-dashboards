@@ -174,7 +174,7 @@
       });
       el.insertAdjacentHTML(
         'beforeend',
-        '<div class="page-footer"><span>Sample data generated for demonstration. Not drawn from any real system.</span><span>Theme: ' +
+        '<div class="page-footer"><span>Sample data generated for demonstration. Not drawn from any real system. Not affiliated with Microsoft.</span><span>Theme: ' +
           M.THEME.name +
           '. Data updated 10/1/26.</span></div>'
       );
@@ -409,8 +409,8 @@
         { label: 'Settings', icon: 'settings', disabled: true }
       ],
       export: [
-        { label: 'Analyze in Excel', icon: 'table', disabled: true },
-        { label: 'PowerPoint', icon: 'exportIcon', disabled: true },
+        { label: 'Analyze in spreadsheet', icon: 'table', disabled: true },
+        { label: 'Slides', icon: 'exportIcon', disabled: true },
         { label: 'PDF', icon: 'file', disabled: true },
         '-',
         { label: 'Export data from a visual: use the visual "..." menu', disabled: true }

@@ -563,7 +563,11 @@
     const S = PBI.S;
     page.visuals.forEach(v => pageEl.appendChild(makeCard(v, v)));
     pageEl.appendChild(
-      el('div', 'page-footer', 'Sample data generated for demonstration. Not drawn from any real system.')
+      el(
+        'div',
+        'page-footer',
+        'Sample data generated for demonstration. Not drawn from any real system. Not affiliated with Microsoft.'
+      )
     );
     if (S.focus) {
       const v = page.visuals.find(x => x.id === S.focus.vid);

@@ -5,7 +5,7 @@
   const T = D.tables;
 
   const THEME = {
-    name: 'City park',
+    name: 'Default',
     colors: ['#1F7A5C', '#2E86C1', '#F2A541', '#7CB342', '#3BB3B8', '#8E6BB4', '#E06A4E', '#5D6D7E'],
     navy: '#14213D',
     increase: '#1AAB40',
