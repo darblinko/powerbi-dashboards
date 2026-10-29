@@ -7,52 +7,77 @@
   const FONT = '"Segoe UI", "Segoe UI Web", wf_segoe-ui_normal, Tahoma, Arial, sans-serif';
 
   function axisCat(extra) {
-    return Object.assign({
-      type: 'category',
-      axisLine: { lineStyle: { color: '#C8C6C4' } },
-      axisTick: { show: false },
-      axisLabel: { color: '#605E5C', fontSize: 11, fontFamily: FONT },
-      nameTextStyle: { color: '#605E5C', fontSize: 11, fontFamily: FONT },
-      splitLine: { show: false }
-    }, extra || {});
+    return Object.assign(
+      {
+        type: 'category',
+        axisLine: { lineStyle: { color: '#C8C6C4' } },
+        axisTick: { show: false },
+        axisLabel: { color: '#605E5C', fontSize: 11, fontFamily: FONT },
+        nameTextStyle: { color: '#605E5C', fontSize: 11, fontFamily: FONT },
+        splitLine: { show: false }
+      },
+      extra || {}
+    );
   }
   function axisVal(extra) {
-    return Object.assign({
-      type: 'value',
-      axisLine: { show: false },
-      axisTick: { show: false },
-      axisLabel: { color: '#605E5C', fontSize: 11, fontFamily: FONT },
-      nameTextStyle: { color: '#605E5C', fontSize: 11, fontFamily: FONT },
-      splitLine: { lineStyle: { color: '#EDEBE9' } }
-    }, extra || {});
+    return Object.assign(
+      {
+        type: 'value',
+        axisLine: { show: false },
+        axisTick: { show: false },
+        axisLabel: { color: '#605E5C', fontSize: 11, fontFamily: FONT },
+        nameTextStyle: { color: '#605E5C', fontSize: 11, fontFamily: FONT },
+        splitLine: { lineStyle: { color: '#EDEBE9' } }
+      },
+      extra || {}
+    );
   }
   function tooltip(extra) {
-    return Object.assign({
-      backgroundColor: '#252423', borderWidth: 0, padding: [7, 10],
-      textStyle: { color: '#FFFFFF', fontSize: 12, fontFamily: FONT },
-      extraCssText: 'border-radius:2px;box-shadow:0 2px 8px rgba(0,0,0,.3);',
-      confine: true, transitionDuration: 0
-    }, extra || {});
+    return Object.assign(
+      {
+        backgroundColor: '#252423',
+        borderWidth: 0,
+        padding: [7, 10],
+        textStyle: { color: '#FFFFFF', fontSize: 12, fontFamily: FONT },
+        extraCssText: 'border-radius:2px;box-shadow:0 2px 8px rgba(0,0,0,.3);',
+        confine: true,
+        transitionDuration: 0
+      },
+      extra || {}
+    );
   }
   function legend(title, names, extra) {
     const offset = title ? Math.round(title.length * 6.6) + 18 : 8;
-    return Object.assign({
-      show: true, left: offset, top: 2, icon: 'circle', itemWidth: 8, itemHeight: 8, itemGap: 12,
-      textStyle: { color: '#605E5C', fontSize: 11, fontFamily: FONT }, data: names
-    }, extra || {});
+    return Object.assign(
+      {
+        show: true,
+        left: offset,
+        top: 2,
+        icon: 'circle',
+        itemWidth: 8,
+        itemHeight: 8,
+        itemGap: 12,
+        textStyle: { color: '#605E5C', fontSize: 11, fontFamily: FONT },
+        data: names
+      },
+      extra || {}
+    );
   }
   function legendTitle(title) {
     if (!title) return [];
     return [{ type: 'text', left: 8, top: 1, style: { text: title, fill: '#252423', font: '600 11px ' + FONT } }];
   }
   function base(opt) {
-    return Object.assign({
-      textStyle: { fontFamily: FONT },
-      color: COLORS,
-      animationDuration: 300,
-      animationDurationUpdate: 250,
-      tooltip: tooltip({ trigger: 'item' })
-    }, opt);
+    return Object.assign(
+      {
+        textStyle: { fontFamily: FONT },
+        color: COLORS,
+        animationDuration: 300,
+        animationDurationUpdate: 250,
+        tooltip: tooltip({ trigger: 'item' })
+      },
+      opt
+    );
   }
   function axisFormatter(kind) {
     if (kind === 'pct' || kind === 'pct2') return v => (v * 100).toFixed(kind === 'pct2' ? 1 : 0) + '%';
@@ -73,11 +98,24 @@
     const shown = hl ? hl.map(x => (x === null ? 0 : x)) : o.full.map(x => (x === null ? 0 : x));
     const rest = hl ? o.full.map((f, i) => restOf(f, hl[i])) : o.full.map(() => 0);
     const stack = o.stack || o.name;
-    const label = o.label ? {
-      show: true, position: o.horizontal ? 'right' : 'top', color: '#605E5C', fontSize: 10, fontFamily: FONT,
-      formatter: p => (o.full[p.dataIndex] === null ? '' : o.label(o.full[p.dataIndex]))
-    } : { show: false };
-    const common = { type: 'bar', name: o.name, stack, barMaxWidth: o.barMaxWidth || 36, barCategoryGap: o.gap || '30%', emphasis: { itemStyle: { borderColor: '#252423', borderWidth: 1 } } };
+    const label = o.label
+      ? {
+          show: true,
+          position: o.horizontal ? 'right' : 'top',
+          color: '#605E5C',
+          fontSize: 10,
+          fontFamily: FONT,
+          formatter: p => (o.full[p.dataIndex] === null ? '' : o.label(o.full[p.dataIndex]))
+        }
+      : { show: false };
+    const common = {
+      type: 'bar',
+      name: o.name,
+      stack,
+      barMaxWidth: o.barMaxWidth || 36,
+      barCategoryGap: o.gap || '30%',
+      emphasis: { itemStyle: { borderColor: '#252423', borderWidth: 1 } }
+    };
     return [
       Object.assign({}, common, { data: shown.map((v, i) => itemColor(v, o, i, 1)) }),
       Object.assign({}, common, { data: rest.map((v, i) => itemColor(v, o, i, 0.4)), label })
@@ -121,5 +159,20 @@
     });
   }
 
-  PBI.cc = { FONT, COLORS, axisCat, axisVal, tooltip, legend, legendTitle, base, axisFormatter, hlBars, hlData, sortKeys, onPointClick, restOf };
+  PBI.cc = {
+    FONT,
+    COLORS,
+    axisCat,
+    axisVal,
+    tooltip,
+    legend,
+    legendTitle,
+    base,
+    axisFormatter,
+    hlBars,
+    hlData,
+    sortKeys,
+    onPointClick,
+    restOf
+  };
 })();

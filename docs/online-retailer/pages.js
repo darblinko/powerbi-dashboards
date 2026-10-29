@@ -1,7 +1,11 @@
 /* Report pages: visual placement on a 1280 x 720 canvas with an 8 px gutter. */
 (function () {
   'use strict';
-  const V = window.VISUALS, R = window.RETENTION, W = window.WHATIF, T = window.TILEMAP, Q = window.QNA;
+  const V = window.VISUALS,
+    R = window.RETENTION,
+    W = window.WHATIF,
+    T = window.TILEMAP,
+    Q = window.QNA;
   const S = () => window.MODEL.getState();
 
   function header(pageKey, title, subtitle) {
@@ -17,14 +21,25 @@
 
   function page1() {
     const cards = KPI_KEYS.map((k, i) => [V.kpiCard('kpi-' + k, k), 8 + i * 212, 72, 204, 100]);
-    const catChart = V.dimBar('cat-chart', { field: 'category', measure: 'revenue', title: 'Revenue by category', color: '#37A794' });
+    const catChart = V.dimBar('cat-chart', {
+      field: 'category',
+      measure: 'revenue',
+      title: 'Revenue by category',
+      color: '#37A794'
+    });
     catChart.hiddenWhen = () => S().tableMode;
     const catTable = V.categoryTable('cat-table');
     catTable.hiddenWhen = () => !S().tableMode;
     return header('p1', 'E-Commerce Performance', 'Direct-to-consumer, United States').concat(cards, [
       [V.comboChart('combo'), 8, 180, 756, 300],
       [T.stateMap('map'), 772, 180, 500, 300],
-      [V.dimBar('channel', { field: 'channel', measure: 'revenue', title: 'Revenue by channel', orient: 'h' }), 8, 488, 416, 208],
+      [
+        V.dimBar('channel', { field: 'channel', measure: 'revenue', title: 'Revenue by channel', orient: 'h' }),
+        8,
+        488,
+        416,
+        208
+      ],
       [catChart, 432, 488, 416, 208],
       [catTable, 432, 488, 416, 208],
       [V.swapButtons('swap'), 596, 491, 176, 22],
@@ -50,7 +65,19 @@
       [W.projectedCard('proj-margin', 'margin'), 645, 160, 201, 84],
       [W.scenarioLine('scenario'), 436, 252, 410, 180],
       [W.conversionByDevice('conv-dev'), 854, 72, 418, 180],
-      [V.dimBar('abandon', { field: 'device', measure: 'cartAbandon', title: 'Cart abandonment rate by device type', orient: 'h', color: '#8B3D88' }), 854, 260, 418, 172],
+      [
+        V.dimBar('abandon', {
+          field: 'device',
+          measure: 'cartAbandon',
+          title: 'Cart abandonment rate by device type',
+          orient: 'h',
+          color: '#8B3D88'
+        }),
+        854,
+        260,
+        418,
+        172
+      ],
       [Q.qnaVisual('qna'), 8, 440, 1264, 256]
     ]);
   }
@@ -63,7 +90,9 @@
   ];
 
   function withFilter(filters, scope, field, values) {
-    const scoped = Object.assign({}, filters[scope], { [field]: Object.assign({}, filters[scope][field], { mode: 'basic', values }) });
+    const scoped = Object.assign({}, filters[scope], {
+      [field]: Object.assign({}, filters[scope][field], { mode: 'basic', values })
+    });
     return Object.assign({}, filters, { [scope]: scoped });
   }
 

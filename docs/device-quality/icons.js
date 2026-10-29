@@ -2,7 +2,8 @@
 (function () {
   'use strict';
   const P = {
-    waffle: '<g fill="currentColor" stroke="none"><rect x="2" y="2" width="3" height="3"/><rect x="6.5" y="2" width="3" height="3"/><rect x="11" y="2" width="3" height="3"/><rect x="2" y="6.5" width="3" height="3"/><rect x="6.5" y="6.5" width="3" height="3"/><rect x="11" y="6.5" width="3" height="3"/><rect x="2" y="11" width="3" height="3"/><rect x="6.5" y="11" width="3" height="3"/><rect x="11" y="11" width="3" height="3"/></g>',
+    waffle:
+      '<g fill="currentColor" stroke="none"><rect x="2" y="2" width="3" height="3"/><rect x="6.5" y="2" width="3" height="3"/><rect x="11" y="2" width="3" height="3"/><rect x="2" y="6.5" width="3" height="3"/><rect x="6.5" y="6.5" width="3" height="3"/><rect x="11" y="6.5" width="3" height="3"/><rect x="2" y="11" width="3" height="3"/><rect x="6.5" y="11" width="3" height="3"/><rect x="11" y="11" width="3" height="3"/></g>',
     search: '<circle cx="6.5" cy="6.5" r="4.5"/><path d="M10 10l4.5 4.5"/>',
     bell: '<path d="M4 11V7a4 4 0 0 1 8 0v4l1.5 1.5h-11z"/><path d="M6.5 14a1.5 1.5 0 0 0 3 0"/>',
     gear: '<circle cx="8" cy="8" r="2.2"/><path d="M8 1.5v2M8 12.5v2M1.5 8h2M12.5 8h2M3.4 3.4l1.4 1.4M11.2 11.2l1.4 1.4M3.4 12.6l1.4-1.4M11.2 4.8l1.4-1.4"/>',
@@ -12,14 +13,16 @@
     home: '<path d="M2 7.5L8 2.5l6 5M3.5 6.5V14h3.5v-4h2v4h3.5V6.5"/>',
     create: '<circle cx="8" cy="8" r="6.5"/><path d="M8 5v6M5 8h6"/>',
     browse: '<path d="M1.5 4h4.5l1.5 1.5h7v8h-13z"/>',
-    onelake: '<ellipse cx="8" cy="4" rx="5.5" ry="2"/><path d="M2.5 4v8c0 1.1 2.5 2 5.5 2s5.5-.9 5.5-2V4M2.5 8c0 1.1 2.5 2 5.5 2s5.5-.9 5.5-2"/>',
+    onelake:
+      '<ellipse cx="8" cy="4" rx="5.5" ry="2"/><path d="M2.5 4v8c0 1.1 2.5 2 5.5 2s5.5-.9 5.5-2V4M2.5 8c0 1.1 2.5 2 5.5 2s5.5-.9 5.5-2"/>',
     apps: '<rect x="2" y="2" width="5" height="5"/><rect x="9" y="2" width="5" height="5"/><rect x="2" y="9" width="5" height="5"/><rect x="9" y="9" width="5" height="5"/>',
     workspaces: '<rect x="2" y="5" width="12" height="9"/><path d="M4 5V3h8v2"/>',
     report: '<rect x="2.5" y="2" width="11" height="12"/><path d="M5 11V8M8 11V5M11 11V9"/>',
     file: '<path d="M3.5 1.5h6l3 3v10h-9z"/><path d="M9.5 1.5v3h3"/>',
     exportI: '<path d="M8 10V2M4.5 5.5L8 2l3.5 3.5M2.5 9v4.5h11V9"/>',
     share: '<path d="M10 2.5l3.5 3.5L10 9.5M13.5 6H8a5 5 0 0 0-5 5v2"/>',
-    teams: '<rect x="1.5" y="3.5" width="8" height="9" rx="1"/><path d="M3.5 6h4M5.5 6v4.5M11 5.5h3v5a1.5 1.5 0 0 1-3 0"/><circle cx="12.5" cy="3.5" r="1.2"/>',
+    teams:
+      '<rect x="1.5" y="3.5" width="8" height="9" rx="1"/><path d="M3.5 6h4M5.5 6v4.5M11 5.5h3v5a1.5 1.5 0 0 1-3 0"/><circle cx="12.5" cy="3.5" r="1.2"/>',
     insights: '<path d="M5.5 11.5h5M6 14h4M8 1.5a4.5 4.5 0 0 0-2.5 8.2V11h5V9.7A4.5 4.5 0 0 0 8 1.5z"/>',
     subscribe: '<rect x="1.5" y="3.5" width="13" height="9"/><path d="M1.5 3.5L8 9l6.5-5.5"/>',
     edit: '<path d="M10.5 2.5l3 3L5 14H2v-3z"/>',
@@ -58,7 +61,17 @@
   };
   function icon(name, size, extraClass) {
     const s = size || 16;
-    return '<svg class="ic ' + (extraClass || '') + '" width="' + s + '" height="' + s + '" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (P[name] || '') + '</svg>';
+    return (
+      '<svg class="ic ' +
+      (extraClass || '') +
+      '" width="' +
+      s +
+      '" height="' +
+      s +
+      '" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+      (P[name] || '') +
+      '</svg>'
+    );
   }
   window.PBI = window.PBI || {};
   window.PBI.icon = icon;

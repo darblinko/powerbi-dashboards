@@ -1,23 +1,27 @@
 'use strict';
 /* Inline SVG icon set, 16 x 16 grid, stroke style close to Fluent UI system icons. */
 const ICON_PATHS = {
-  waffle: '<g fill="currentColor" stroke="none"><circle cx="3" cy="3" r="1.3"/><circle cx="8" cy="3" r="1.3"/><circle cx="13" cy="3" r="1.3"/><circle cx="3" cy="8" r="1.3"/><circle cx="8" cy="8" r="1.3"/><circle cx="13" cy="8" r="1.3"/><circle cx="3" cy="13" r="1.3"/><circle cx="8" cy="13" r="1.3"/><circle cx="13" cy="13" r="1.3"/></g>',
+  waffle:
+    '<g fill="currentColor" stroke="none"><circle cx="3" cy="3" r="1.3"/><circle cx="8" cy="3" r="1.3"/><circle cx="13" cy="3" r="1.3"/><circle cx="3" cy="8" r="1.3"/><circle cx="8" cy="8" r="1.3"/><circle cx="13" cy="8" r="1.3"/><circle cx="3" cy="13" r="1.3"/><circle cx="8" cy="13" r="1.3"/><circle cx="13" cy="13" r="1.3"/></g>',
   search: '<circle cx="6.5" cy="6.5" r="4.5"/><path d="M10 10l4.5 4.5"/>',
   bell: '<path d="M4 11V7a4 4 0 0 1 8 0v4l1.5 1.5h-11z"/><path d="M6.5 14a1.6 1.6 0 0 0 3 0"/>',
   gear: '<circle cx="8" cy="8" r="2.2"/><path d="M8 1.5v2M8 12.5v2M1.5 8h2M12.5 8h2M3.4 3.4l1.4 1.4M11.2 11.2l1.4 1.4M3.4 12.6l1.4-1.4M11.2 4.8l1.4-1.4"/>',
   download: '<path d="M8 2v8M4.5 6.8L8 10.3l3.5-3.5M3 13.5h10"/>',
   help: '<circle cx="8" cy="8" r="6.3"/><path d="M6.2 6.2a1.9 1.9 0 1 1 2.6 1.8c-.6.3-.8.6-.8 1.2v.5"/><circle cx="8" cy="11.6" r=".5" fill="currentColor"/>',
-  smile: '<circle cx="8" cy="8" r="6.3"/><path d="M5.3 9.5a3.2 3.2 0 0 0 5.4 0"/><circle cx="5.9" cy="6.3" r=".5" fill="currentColor"/><circle cx="10.1" cy="6.3" r=".5" fill="currentColor"/>',
+  smile:
+    '<circle cx="8" cy="8" r="6.3"/><path d="M5.3 9.5a3.2 3.2 0 0 0 5.4 0"/><circle cx="5.9" cy="6.3" r=".5" fill="currentColor"/><circle cx="10.1" cy="6.3" r=".5" fill="currentColor"/>',
   home: '<path d="M2.5 7.5L8 2.5l5.5 5V13.5H9.8V10H6.2v3.5H2.5z"/>',
   create: '<circle cx="8" cy="8" r="6.3"/><path d="M8 5v6M5 8h6"/>',
   browse: '<path d="M1.8 4.2h4.4l1.3 1.5h6.7v7.8H1.8z"/>',
   onelake: '<path d="M8 1.8c2.4 3 4.2 5.2 4.2 7.6a4.2 4.2 0 0 1-8.4 0C3.8 7 5.6 4.8 8 1.8z"/>',
   apps: '<rect x="2" y="2" width="5" height="5" rx="1"/><rect x="9" y="2" width="5" height="5" rx="1"/><rect x="2" y="9" width="5" height="5" rx="1"/><rect x="9" y="9" width="5" height="5" rx="1"/>',
-  workspaces: '<rect x="2" y="3" width="12" height="3.2" rx=".8"/><rect x="2" y="9.5" width="12" height="3.2" rx=".8"/>',
+  workspaces:
+    '<rect x="2" y="3" width="12" height="3.2" rx=".8"/><rect x="2" y="9.5" width="12" height="3.2" rx=".8"/>',
   file: '<path d="M4 1.8h5l3 3v9.4H4z"/><path d="M9 1.8v3h3"/>',
   export: '<path d="M8 10V2M5 5l3-3 3 3M3 9v4.5h10V9"/>',
   share: '<path d="M9.5 3.5l4 3.5-4 3.5V8.6C6.3 8.6 4 9.6 2.5 12.3c.4-3.8 2.7-6 7-6.3z"/>',
-  teams: '<rect x="1.8" y="4" width="8.4" height="8" rx="1"/><path d="M4 6.5h4M6 6.5v4M11.5 6.5h2.2v4a1.7 1.7 0 0 1-3.4 0"/><circle cx="12.3" cy="3.8" r="1.3"/>',
+  teams:
+    '<rect x="1.8" y="4" width="8.4" height="8" rx="1"/><path d="M4 6.5h4M6 6.5v4M11.5 6.5h2.2v4a1.7 1.7 0 0 1-3.4 0"/><circle cx="12.3" cy="3.8" r="1.3"/>',
   insights: '<path d="M8 1.8a4.3 4.3 0 0 0-2.4 7.9V11h4.8V9.7A4.3 4.3 0 0 0 8 1.8zM6 13.5h4"/>',
   subscribe: '<rect x="1.8" y="3.5" width="12.4" height="9" rx="1"/><path d="M2 4l6 4.8L14 4"/>',
   edit: '<path d="M10.8 2.4l2.8 2.8-8 8H2.8v-2.8z"/><path d="M9.3 3.9l2.8 2.8"/>',
@@ -43,16 +47,21 @@ const ICON_PATHS = {
   lock: '<rect x="3" y="7" width="10" height="7" rx="1"/><path d="M5 7V5a3 3 0 0 1 6 0v2"/>',
   back: '<path d="M13.5 8h-11M6.5 4L2.5 8l4 4"/>',
   check: '<path d="M3 8.5l3.2 3.2L13 4.8"/>',
-  checkCircle: '<circle cx="8" cy="8" r="6.3" fill="#107C10" stroke="#107C10"/><path d="M5 8.2l2 2 4-4.2" stroke="#fff" stroke-width="1.6"/>',
-  clockCircle: '<circle cx="8" cy="8" r="6.3" fill="#C19C00" stroke="#C19C00"/><path d="M8 4.6V8l2.2 1.4" stroke="#fff" stroke-width="1.5"/>',
+  checkCircle:
+    '<circle cx="8" cy="8" r="6.3" fill="#107C10" stroke="#107C10"/><path d="M5 8.2l2 2 4-4.2" stroke="#fff" stroke-width="1.6"/>',
+  clockCircle:
+    '<circle cx="8" cy="8" r="6.3" fill="#C19C00" stroke="#C19C00"/><path d="M8 4.6V8l2.2 1.4" stroke="#fff" stroke-width="1.5"/>',
   emptyCircle: '<circle cx="8" cy="8" r="6" stroke="#A19F9D" stroke-width="1.4"/>',
-  failCircle: '<circle cx="8" cy="8" r="6.3" fill="#D13438" stroke="#D13438"/><path d="M5.6 5.6l4.8 4.8M10.4 5.6l-4.8 4.8" stroke="#fff" stroke-width="1.6"/>',
+  failCircle:
+    '<circle cx="8" cy="8" r="6.3" fill="#D13438" stroke="#D13438"/><path d="M5.6 5.6l4.8 4.8M10.4 5.6l-4.8 4.8" stroke="#fff" stroke-width="1.6"/>',
   kpiGood: '<circle cx="8" cy="8" r="5.5" fill="#107C10" stroke="none"/>',
   kpiWarn: '<path d="M8 2.5l6 10.5H2z" fill="#C19C00" stroke="none"/>',
   kpiBad: '<path d="M8 2l6 6-6 6-6-6z" fill="#D13438" stroke="none"/>',
-  sparkle: '<path d="M8 1.5l1.4 4.1 4.1 1.4-4.1 1.4L8 12.5 6.6 8.4 2.5 7l4.1-1.4zM12.5 11l.6 1.6 1.6.6-1.6.6-.6 1.6-.6-1.6-1.6-.6 1.6-.6z"/>',
+  sparkle:
+    '<path d="M8 1.5l1.4 4.1 4.1 1.4-4.1 1.4L8 12.5 6.6 8.4 2.5 7l4.1-1.4zM12.5 11l.6 1.6 1.6.6-1.6.6-.6 1.6-.6-1.6-1.6-.6 1.6-.6z"/>',
   pages: '<rect x="2.5" y="2" width="11" height="12" rx="1"/><path d="M5 5.5h6M5 8h6M5 10.5h4"/>',
-  fitPage: '<rect x="2" y="3" width="12" height="10" rx="1"/><path d="M5 6.5V5h1.5M11 6.5V5H9.5M5 9.5V11h1.5M11 9.5V11H9.5"/>',
+  fitPage:
+    '<rect x="2" y="3" width="12" height="10" rx="1"/><path d="M5 6.5V5h1.5M11 6.5V5H9.5M5 9.5V11h1.5M11 9.5V11H9.5"/>',
   table: '<rect x="2" y="2.5" width="12" height="11" rx="1"/><path d="M2 6h12M2 9.5h12M6.5 6v7.5"/>',
   sortDesc: '<path d="M4 2.5v11M1.8 11.2L4 13.5l2.2-2.3M8.5 4h5.5M8.5 7.5h4M8.5 11h2.5"/>',
   sortAsc: '<path d="M4 13.5V2.5M1.8 4.8L4 2.5l2.2 2.3M8.5 4h2.5M8.5 7.5h4M8.5 11h5.5"/>',
@@ -65,7 +74,16 @@ const ICON_PATHS = {
 
 function icon(name, size, extraClass) {
   const s = size || 16;
-  return '<svg class="ico ' + (extraClass || '') + '" width="' + s + '" height="' + s + '" viewBox="0 0 16 16" fill="none" ' +
+  return (
+    '<svg class="ico ' +
+    (extraClass || '') +
+    '" width="' +
+    s +
+    '" height="' +
+    s +
+    '" viewBox="0 0 16 16" fill="none" ' +
     'stroke="currentColor" stroke-width="1.15" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
-    (ICON_PATHS[name] || '') + '</svg>';
+    (ICON_PATHS[name] || '') +
+    '</svg>'
+  );
 }

@@ -5,26 +5,58 @@ const U = D.util;
 
 const THEME = ['#3257A8', '#37A794', '#8B3D88', '#DD6B7F', '#6B91C9', '#F5C869', '#77C4A8', '#DEA6CF'];
 const FORM_COLORS = {
-  Capsule: '#3257A8', Tablet: '#37A794', 'Chewable tablet': '#8B3D88', Powder: '#F5C869',
-  Softgel: '#DD6B7F', Gummy: '#6B91C9'
+  Capsule: '#3257A8',
+  Tablet: '#37A794',
+  'Chewable tablet': '#8B3D88',
+  Powder: '#F5C869',
+  Softgel: '#DD6B7F',
+  Gummy: '#6B91C9'
 };
 const DISPOSITION_COLORS = {
-  Released: '#3257A8', 'Released with deviation': '#6B91C9', Rejected: '#DD6B7F', 'On hold': '#F5C869'
+  Released: '#3257A8',
+  'Released with deviation': '#6B91C9',
+  Rejected: '#DD6B7F',
+  'On hold': '#F5C869'
 };
 const DISPOSITIONS = ['Released', 'Released with deviation', 'Rejected', 'On hold'];
 const FONT = '"Segoe UI", "Segoe UI Web", wf_segoe-ui_normal, Tahoma, Arial, sans-serif';
 
 const FIELD_LABELS = {
-  site: 'Site', form: 'Dosage form', customer: 'Customer', product: 'Product', line: 'Line', year: 'Year',
-  quarter: 'Quarter', month: 'Month', week: 'Manufacture week', monthIdx: 'Manufacture month',
-  testType: 'Test type', tier: 'Customer tier', region: 'Region', disposition: 'Disposition', batchId: 'Batch ID', status: 'Status'
+  site: 'Site',
+  form: 'Dosage form',
+  customer: 'Customer',
+  product: 'Product',
+  line: 'Line',
+  year: 'Year',
+  quarter: 'Quarter',
+  month: 'Month',
+  week: 'Manufacture week',
+  monthIdx: 'Manufacture month',
+  testType: 'Test type',
+  tier: 'Customer tier',
+  region: 'Region',
+  disposition: 'Disposition',
+  batchId: 'Batch ID',
+  status: 'Status'
 };
 
 const FIELDS = {
-  site: r => r.site, form: r => r.form, customer: r => r.customer, product: r => r.product, line: r => r.line,
-  year: r => r.year, quarter: r => r.quarter, month: r => r.month, week: r => r.week, monthIdx: r => r.monthIdx,
-  testType: r => r.testType, tier: r => r.tier, region: r => r.region, disposition: r => r.disposition,
-  batchId: r => (r.batchId !== undefined ? r.batchId : r.id), status: r => r.status
+  site: r => r.site,
+  form: r => r.form,
+  customer: r => r.customer,
+  product: r => r.product,
+  line: r => r.line,
+  year: r => r.year,
+  quarter: r => r.quarter,
+  month: r => r.month,
+  week: r => r.week,
+  monthIdx: r => r.monthIdx,
+  testType: r => r.testType,
+  tier: r => r.tier,
+  region: r => r.region,
+  disposition: r => r.disposition,
+  batchId: r => (r.batchId !== undefined ? r.batchId : r.id),
+  status: r => r.status
 };
 
 function distinct(rows, field) {
@@ -33,58 +65,100 @@ function distinct(rows, field) {
     const v = FIELDS[field](r);
     if (v !== undefined && v !== null) counts.set(v, (counts.get(v) || 0) + 1);
   }
-  return [...counts.entries()].sort((a, b) => String(a[0]).localeCompare(String(b[0]))).map(([value, count]) => ({ value, count }));
+  return [...counts.entries()]
+    .sort((a, b) => String(a[0]).localeCompare(String(b[0])))
+    .map(([value, count]) => ({ value, count }));
 }
 
 const VALUES = {};
-['site', 'form', 'customer', 'year', 'tier', 'region', 'line', 'disposition', 'product'].forEach(f => { VALUES[f] = distinct(D.batches, f); });
+['site', 'form', 'customer', 'year', 'tier', 'region', 'line', 'disposition', 'product'].forEach(f => {
+  VALUES[f] = distinct(D.batches, f);
+});
 VALUES.testType = distinct(D.oos, 'testType');
 VALUES.status = distinct(D.oos, 'status');
 
 /* Report state. Replaced field-by-field through setState helpers in app.js. */
 const S = {
-  page: 'overview', filters: [], selection: null, drill: {}, sort: {}, spotlight: null, focus: null,
-  tableView: null, selectedVisual: null, drillBatch: null, drillReturn: 'overview', sidePane: null,
-  filtersCollapsed: false, keepAllFilters: true
+  page: 'overview',
+  filters: [],
+  selection: null,
+  drill: {},
+  sort: {},
+  spotlight: null,
+  focus: null,
+  tableView: null,
+  selectedVisual: null,
+  drillBatch: null,
+  drillReturn: 'overview',
+  sidePane: null,
+  filtersCollapsed: false,
+  keepAllFilters: true
 };
 
 function makeFilter(scope, field, extra) {
-  return Object.assign({
-    id: scope + ':' + (extra && extra.visual ? extra.visual + ':' : '') + (extra && extra.page ? extra.page + ':' : '') + field,
-    scope, field, kind: 'basic', selected: [], adv: null, open: false, mode: 'basic', search: ''
-  }, extra || {});
+  return Object.assign(
+    {
+      id:
+        scope +
+        ':' +
+        (extra && extra.visual ? extra.visual + ':' : '') +
+        (extra && extra.page ? extra.page + ':' : '') +
+        field,
+      scope,
+      field,
+      kind: 'basic',
+      selected: [],
+      adv: null,
+      open: false,
+      mode: 'basic',
+      search: ''
+    },
+    extra || {}
+  );
 }
 
 function initFilters(visualDefs) {
   const filters = [
-    makeFilter('all', 'site'), makeFilter('all', 'form'), makeFilter('all', 'customer'),
+    makeFilter('all', 'site'),
+    makeFilter('all', 'form'),
+    makeFilter('all', 'customer'),
     makeFilter('page', 'year', { page: 'overview' }),
     makeFilter('page', 'testType', { page: 'quality' }),
     makeFilter('page', 'tier', { page: 'customer' }),
     makeFilter('page', 'batchId', { page: 'batch', kind: 'drill' })
   ];
   for (const v of Object.values(visualDefs)) {
-    for (const spec of v.filters || []) filters.push(makeFilter('visual', spec.field, Object.assign({ visual: v.id }, spec)));
+    for (const spec of v.filters || [])
+      filters.push(makeFilter('visual', spec.field, Object.assign({ visual: v.id }, spec)));
   }
   S.filters = filters;
 }
 
 function filtersFor(vid, page) {
   const p = page || (vid && VIS[vid] ? VIS[vid].page : S.page);
-  return S.filters.filter(f => f.scope === 'all' || (f.scope === 'page' && f.page === p) || (f.scope === 'visual' && f.visual === vid));
+  return S.filters.filter(
+    f => f.scope === 'all' || (f.scope === 'page' && f.page === p) || (f.scope === 'visual' && f.visual === vid)
+  );
 }
 
 function advTest(adv, value) {
   const v = String(value).toLowerCase();
   const t = String(adv.text || '').toLowerCase();
   switch (adv.op) {
-    case 'contains': return v.includes(t);
-    case 'does not contain': return !v.includes(t);
-    case 'starts with': return v.startsWith(t);
-    case 'does not start with': return !v.startsWith(t);
-    case 'is': return v === t;
-    case 'is not': return v !== t;
-    default: return true;
+    case 'contains':
+      return v.includes(t);
+    case 'does not contain':
+      return !v.includes(t);
+    case 'starts with':
+      return v.startsWith(t);
+    case 'does not start with':
+      return !v.startsWith(t);
+    case 'is':
+      return v === t;
+    case 'is not':
+      return v !== t;
+    default:
+      return true;
   }
 }
 
@@ -108,14 +182,18 @@ function passFilter(f, r) {
 }
 
 function passSelection(r, keys) {
-  return keys.some(k => Object.keys(k).every(field => {
-    const v = FIELDS[field](r);
-    return v === undefined || v === k[field];
-  }));
+  return keys.some(k =>
+    Object.keys(k).every(field => {
+      const v = FIELDS[field](r);
+      return v === undefined || v === k[field];
+    })
+  );
 }
 
 function filterRows(rows, filters, keys, extra) {
-  return rows.filter(r => filters.every(f => passFilter(f, r)) && (!keys || passSelection(r, keys)) && (!extra || extra(r)));
+  return rows.filter(
+    r => filters.every(f => passFilter(f, r)) && (!keys || passSelection(r, keys)) && (!extra || extra(r))
+  );
 }
 
 /* One filter context function. Every visual reads its rows through it. */
@@ -137,7 +215,9 @@ function hasForeignSelection(vid) {
 
 function isKeySelected(vid, key) {
   if (!S.selection || S.selection.source !== vid) return null;
-  return S.selection.keys.some(k => Object.keys(key).every(f => k[f] === key[f]) && Object.keys(k).every(f => key[f] === k[f]));
+  return S.selection.keys.some(
+    k => Object.keys(key).every(f => k[f] === key[f]) && Object.keys(k).every(f => key[f] === k[f])
+  );
 }
 
 function groupBy(rows, keyFn) {
@@ -166,28 +246,42 @@ const isReleased = b => b.disposition === 'Released' || b.disposition === 'Relea
 
 const MEASURES = {
   released: {
-    name: 'Batches released', fmt: 'int',
+    name: 'Batches released',
+    fmt: 'int',
     dax: 'Batches released =\nCALCULATE (\n    COUNTROWS ( Batches ),\n    Batches[Disposition] IN { "Released", "Released with deviation" }\n)',
     f: c => c.batches.filter(isReleased).length
   },
   batches: { name: 'Batches', fmt: 'int', dax: 'Batches =\nCOUNTROWS ( Batches )', f: c => c.batches.length },
   rft: {
-    name: 'Right first time %', fmt: 'pct', target: 0.95,
+    name: 'Right first time %',
+    fmt: 'pct',
+    target: 0.95,
     dax: 'Right first time % =\nDIVIDE (\n    CALCULATE ( COUNTROWS ( Batches ), Batches[Right First Time] = TRUE () ),\n    COUNTROWS ( Batches )\n)',
     f: c => div(c.batches.filter(b => b.rft).length, c.batches.length)
   },
   yield: {
-    name: 'Average batch yield %', fmt: 'pct', target: 0.97,
+    name: 'Average batch yield %',
+    fmt: 'pct',
+    target: 0.97,
     dax: 'Average batch yield % =\nDIVIDE ( AVERAGE ( Batches[Yield %] ), 100 )',
-    f: c => div(c.batches.reduce((a, b) => a + b.yieldPct, 0), c.batches.length * 100)
+    f: c =>
+      div(
+        c.batches.reduce((a, b) => a + b.yieldPct, 0),
+        c.batches.length * 100
+      )
   },
   oosOpen: {
-    name: 'OOS investigations open', fmt: 'int', target: 10, lowerIsBetter: true,
-    dax: 'OOS investigations open =\nCALCULATE (\n    COUNTROWS ( \'OOS Investigations\' ),\n    \'OOS Investigations\'[Status] = "Open"\n)',
+    name: 'OOS investigations open',
+    fmt: 'int',
+    target: 10,
+    lowerIsBetter: true,
+    dax: "OOS investigations open =\nCALCULATE (\n    COUNTROWS ( 'OOS Investigations' ),\n    'OOS Investigations'[Status] = \"Open\"\n)",
     f: c => c.oos.filter(o => o.status === 'Open').length
   },
   otif: {
-    name: 'On-time-in-full %', fmt: 'pct', target: 0.95,
+    name: 'On-time-in-full %',
+    fmt: 'pct',
+    target: 0.95,
     dax: 'On-time-in-full % =\nVAR Shipped =\n    CALCULATE ( COUNTROWS ( Batches ), NOT ISBLANK ( Batches[OTIF Flag] ) )\nRETURN\n    DIVIDE ( CALCULATE ( COUNTROWS ( Batches ), Batches[OTIF Flag] = TRUE () ), Shipped )',
     f: c => {
       const shipped = c.batches.filter(b => b.otif !== null);
@@ -195,20 +289,28 @@ const MEASURES = {
     }
   },
   cycle: {
-    name: 'Release cycle time days', fmt: 'dec1', target: 7, lowerIsBetter: true,
+    name: 'Release cycle time days',
+    fmt: 'dec1',
+    target: 7,
+    lowerIsBetter: true,
     dax: 'Release cycle time days =\nAVERAGEX (\n    FILTER ( Batches, NOT ISBLANK ( Batches[Release Date] ) ),\n    DATEDIFF ( Batches[Manufacture End Date], Batches[Release Date], DAY )\n)',
     f: c => {
       const rel = c.batches.filter(isReleased);
-      return div(rel.reduce((a, b) => a + b.releaseDays, 0), rel.length);
+      return div(
+        rel.reduce((a, b) => a + b.releaseDays, 0),
+        rel.length
+      );
     }
   },
   revenue: {
-    name: 'Revenue', fmt: 'cur',
+    name: 'Revenue',
+    fmt: 'cur',
     dax: 'Revenue =\nCALCULATE (\n    SUM ( Batches[Revenue] ),\n    Batches[Disposition] IN { "Released", "Released with deviation" }\n)',
     f: c => c.batches.reduce((a, b) => a + b.revenue, 0)
   },
   cpmu: {
-    name: 'Complaints per million units', fmt: 'dec1',
+    name: 'Complaints per million units',
+    fmt: 'dec1',
     dax: 'Complaints per million units =\nDIVIDE (\n    SUM ( Batches[Complaint Count] ),\n    CALCULATE ( SUM ( Batches[Units] ), Batches[Disposition] IN { "Released", "Released with deviation" } )\n) * 1000000',
     f: c => {
       const rel = c.batches.filter(isReleased);
@@ -218,16 +320,22 @@ const MEASURES = {
     }
   },
   oosRate: {
-    name: 'OOS rate %', fmt: 'pct',
-    dax: 'OOS rate % =\nDIVIDE (\n    DISTINCTCOUNT ( \'OOS Investigations\'[Batch ID] ),\n    COUNTROWS ( Batches )\n)',
+    name: 'OOS rate %',
+    fmt: 'pct',
+    dax: "OOS rate % =\nDIVIDE (\n    DISTINCTCOUNT ( 'OOS Investigations'[Batch ID] ),\n    COUNTROWS ( Batches )\n)",
     f: c => div(new Set(c.oos.map(o => o.batchId)).size, c.batches.length)
   },
   oosCount: {
-    name: 'OOS results', fmt: 'int', dax: 'OOS results =\nCOUNTROWS ( \'OOS Investigations\' )', f: c => c.oos.length
+    name: 'OOS results',
+    fmt: 'int',
+    dax: "OOS results =\nCOUNTROWS ( 'OOS Investigations' )",
+    f: c => c.oos.length
   }
 };
 
-function measure(key, c) { return MEASURES[key].f(c); }
+function measure(key, c) {
+  return MEASURES[key].f(c);
+}
 
 function shortNum(v, digits) {
   const d = digits === undefined ? 1 : digits;
@@ -245,17 +353,31 @@ const FMT = {
   cur: v => (v === null || v === undefined || isNaN(v) ? '(Blank)' : '$' + shortNum(v, 2)),
   short: v => (v === null || v === undefined || isNaN(v) ? '(Blank)' : shortNum(v))
 };
-function fmtMeasure(key, v) { return FMT[MEASURES[key].fmt](v); }
+function fmtMeasure(key, v) {
+  return FMT[MEASURES[key].fmt](v);
+}
 
 /* Date hierarchy used by drillable time axes. */
 const DATE_LEVELS = {
   year: { key: r => r.year, full: r => r.year, short: r => r.year, sortShort: r => +r.year },
-  quarter: { key: r => r.quarter, full: r => r.year + ' Qtr ' + r.quarter.slice(-1), short: r => 'Qtr ' + r.quarter.slice(-1), sortShort: r => +r.quarter.slice(-1) },
-  month: {
-    key: r => r.month, full: r => D.MONTHS[+r.month.slice(5) - 1] + ' ' + r.year,
-    short: r => D.MONTHS_LONG[+r.month.slice(5) - 1], sortShort: r => +r.month.slice(5)
+  quarter: {
+    key: r => r.quarter,
+    full: r => r.year + ' Qtr ' + r.quarter.slice(-1),
+    short: r => 'Qtr ' + r.quarter.slice(-1),
+    sortShort: r => +r.quarter.slice(-1)
   },
-  week: { key: r => r.week, full: r => U.fmtDate(D.DAY0 + r.week * 7), short: r => U.fmtDate(D.DAY0 + r.week * 7), sortShort: r => r.week }
+  month: {
+    key: r => r.month,
+    full: r => D.MONTHS[+r.month.slice(5) - 1] + ' ' + r.year,
+    short: r => D.MONTHS_LONG[+r.month.slice(5) - 1],
+    sortShort: r => +r.month.slice(5)
+  },
+  week: {
+    key: r => r.week,
+    full: r => U.fmtDate(D.DAY0 + r.week * 7),
+    short: r => U.fmtDate(D.DAY0 + r.week * 7),
+    sortShort: r => r.week
+  }
 };
 
 function drillState(vid) {
@@ -289,4 +411,7 @@ function sortState(vid) {
 
 /* Visual registry. Visual files register definitions; app.js lays them out. */
 const VIS = {};
-function defineVisual(def) { VIS[def.id] = def; return def; }
+function defineVisual(def) {
+  VIS[def.id] = def;
+  return def;
+}

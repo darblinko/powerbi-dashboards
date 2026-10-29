@@ -7,45 +7,63 @@ const BOOKMARK_BATCH = 'B25-11532';
 const BOOKMARKS = [
   {
     name: 'Gummy batches, yield decline since 7/13/26',
-    page: 'overview', slicers: { form: ['Gummy'] }
+    page: 'overview',
+    slicers: { form: ['Gummy'] }
   },
   {
     name: 'East Plant 2026, batches released and yield by month',
-    page: 'overview', slicers: { site: ['East Plant'] }, filters: { 'page:overview:year': { selected: ['2026'] } },
+    page: 'overview',
+    slicers: { site: ['East Plant'] },
+    filters: { 'page:overview:year': { selected: ['2026'] } },
     drill: { combo: { level: 2 } }
   },
   {
     name: 'Insights, trends for all sites',
-    page: 'overview', sidePane: { type: 'insights', tab: 'Trends' }
+    page: 'overview',
+    sidePane: { type: 'insights', tab: 'Trends' }
   },
   {
     name: 'West Plant OOS anomaly 11/10/25, Tablet press 1 dissolution',
-    page: 'quality', slicers: { site: ['West Plant'] }, anomalyWeek: 44
+    page: 'quality',
+    slicers: { site: ['West Plant'] },
+    anomalyWeek: 44
   },
   {
     name: 'Central Plant heavy metals OOS, spike 3/9/26',
-    page: 'quality', slicers: { site: ['Central Plant'] }, selection: { source: 'testBar', keys: [{ testType: 'Heavy metals' }] }
+    page: 'quality',
+    slicers: { site: ['Central Plant'] },
+    selection: { source: 'testBar', keys: [{ testType: 'Heavy metals' }] }
   },
   {
     name: 'Open OOS investigations by age',
-    page: 'quality', filters: { 'visual:oosTable:status': { selected: ['Open'] } }, sort: { oosTable: { field: 'ageDays', dir: 'desc' } },
-    focus: 'oosTable', selectedVisual: 'oosTable'
+    page: 'quality',
+    filters: { 'visual:oosTable:status': { selected: ['Open'] } },
+    sort: { oosTable: { field: 'ageDays', dir: 'desc' } },
+    focus: 'oosTable',
+    selectedVisual: 'oosTable'
   },
   {
     name: 'Fabrikam Wellness, OTIF decline since 2/2/26',
-    page: 'customer', selection: { source: 'scatter', keys: [{ customer: 'Fabrikam Wellness' }] }
+    page: 'customer',
+    selection: { source: 'scatter', keys: [{ customer: 'Fabrikam Wellness' }] }
   },
   {
     name: 'Complaints per M units, Tailspin Kids by product',
-    page: 'customer', sort: { matrix: { field: 'cpmu', dir: 'desc' } }, drill: { matrix: { open: ['Tailspin Kids'] } }
+    page: 'customer',
+    sort: { matrix: { field: 'cpmu', dir: 'desc' } },
+    drill: { matrix: { open: ['Tailspin Kids'] } }
   },
   {
     name: 'Strategic tier, revenue against OTIF %',
-    page: 'customer', filters: { 'page:customer:tier': { selected: ['Strategic'] } }, spotlight: 'scatter'
+    page: 'customer',
+    filters: { 'page:customer:tier': { selected: ['Strategic'] } },
+    spotlight: 'scatter'
   },
   {
     name: 'Batch Record ' + BOOKMARK_BATCH + ', rejected for dissolution OOS',
-    page: 'batch', drillBatch: BOOKMARK_BATCH, drillReturn: 'quality'
+    page: 'batch',
+    drillBatch: BOOKMARK_BATCH,
+    drillReturn: 'quality'
   }
 ];
 
@@ -58,8 +76,19 @@ function resetReportState() {
   hideTip();
   initFilters(VIS);
   Object.assign(S, {
-    page: 'overview', selection: null, drill: {}, sort: {}, spotlight: null, focus: null, tableView: null,
-    selectedVisual: null, drillBatch: null, drillReturn: 'overview', sidePane: null, filtersCollapsed: false, keepAllFilters: true
+    page: 'overview',
+    selection: null,
+    drill: {},
+    sort: {},
+    spotlight: null,
+    focus: null,
+    tableView: null,
+    selectedVisual: null,
+    drillBatch: null,
+    drillReturn: 'overview',
+    sidePane: null,
+    filtersCollapsed: false,
+    keepAllFilters: true
   });
 }
 
@@ -83,7 +112,8 @@ function applyDrillSpecs(bm) {
 function anomalyPaneFor(week) {
   const { c, weeks, series } = oosTrendModel();
   const pt = series.find(p => p.week === week);
-  if (!pt || !pt.isAnomaly) throw new Error('Week ' + week + ' is not detected as an anomaly under the bookmark filters');
+  if (!pt || !pt.isAnomaly)
+    throw new Error('Week ' + week + ' is not detected as an anomaly under the bookmark filters');
   return Object.assign({ type: 'anomaly', explanations: explainAnomaly(c, pt.week, weeks) }, pt);
 }
 
@@ -94,18 +124,28 @@ function applyBookmark(index) {
   applyDrillSpecs(bm);
   S.page = bm.page;
   S.sort = Object.assign({}, bm.sort);
-  S.selection = bm.selection ? { source: bm.selection.source, keys: bm.selection.keys.map(k => Object.assign({}, k)) } : null;
+  S.selection = bm.selection
+    ? { source: bm.selection.source, keys: bm.selection.keys.map(k => Object.assign({}, k)) }
+    : null;
   S.focus = bm.focus || null;
   S.spotlight = bm.spotlight || null;
   S.selectedVisual = bm.selectedVisual || null;
   if (bm.drillBatch) {
     S.drillBatch = bm.drillBatch;
     S.drillReturn = bm.drillReturn;
-    Object.assign(S.filters.find(f => f.kind === 'drill'), { selected: [bm.drillBatch], open: true });
+    Object.assign(
+      S.filters.find(f => f.kind === 'drill'),
+      { selected: [bm.drillBatch], open: true }
+    );
   }
   S.sidePane = bm.sidePane ? Object.assign({}, bm.sidePane) : null;
   if (bm.anomalyWeek !== undefined) {
-    try { S.sidePane = anomalyPaneFor(bm.anomalyWeek); } catch (err) { console.error(err); toast('The anomaly saved in this bookmark was not found.'); }
+    try {
+      S.sidePane = anomalyPaneFor(bm.anomalyWeek);
+    } catch (err) {
+      console.error(err);
+      toast('The anomaly saved in this bookmark was not found.');
+    }
   }
   activeBookmark = index;
   builtPage = null;
@@ -115,11 +155,29 @@ function applyBookmark(index) {
 
 /* ---------- Bookmarks dropdown ---------- */
 function bookmarkMenuHtml() {
-  const items = BOOKMARKS.map((bm, i) => '<div class="menu-item bm-item' + (i === activeBookmark ? ' on' : '') + '" data-i="' + i + '">' +
-    '<span class="mi-ico">' + (i === activeBookmark ? icon('check', 14) : icon('bookmark', 14)) + '</span><span class="mi-label" title="' + esc(bm.name) + '">' + esc(bm.name) + '</span></div>').join('');
-  return '<div class="menu-head">Report bookmarks</div>' + items + '<div class="menu-sep"></div>' +
-    '<div class="menu-item bm-view" data-act="view"><span class="mi-ico">' + (bookmarkBarOpen ? icon('check', 14) : icon('view', 14)) +
-    '</span><span class="mi-label">View</span></div>';
+  const items = BOOKMARKS.map(
+    (bm, i) =>
+      '<div class="menu-item bm-item' +
+      (i === activeBookmark ? ' on' : '') +
+      '" data-i="' +
+      i +
+      '">' +
+      '<span class="mi-ico">' +
+      (i === activeBookmark ? icon('check', 14) : icon('bookmark', 14)) +
+      '</span><span class="mi-label" title="' +
+      esc(bm.name) +
+      '">' +
+      esc(bm.name) +
+      '</span></div>'
+  ).join('');
+  return (
+    '<div class="menu-head">Report bookmarks</div>' +
+    items +
+    '<div class="menu-sep"></div>' +
+    '<div class="menu-item bm-view" data-act="view"><span class="mi-ico">' +
+    (bookmarkBarOpen ? icon('check', 14) : icon('view', 14)) +
+    '</span><span class="mi-label">View</span></div>'
+  );
 }
 
 function showBookmarkMenu(btn) {
@@ -174,13 +232,31 @@ function renderBookmarkBar() {
     });
   }
   bar.classList.toggle('open', bookmarkBarOpen);
-  if (!bookmarkBarOpen) { bar.innerHTML = ''; return; }
+  if (!bookmarkBarOpen) {
+    bar.innerHTML = '';
+    return;
+  }
   const i = activeBookmark === null ? 0 : activeBookmark;
-  bar.innerHTML = '<div class="bm-bar-inner"><span class="bm-name" title="' + esc(BOOKMARKS[i].name) + '">' + esc(BOOKMARKS[i].name) + '</span>' +
-    '<button class="bm-nav" data-act="prev" title="Previous bookmark">' + icon('chevronLeft', 14) + '</button>' +
-    '<span class="bm-count">' + (i + 1) + ' of ' + BOOKMARKS.length + '</span>' +
-    '<button class="bm-nav" data-act="next" title="Next bookmark">' + icon('chevronRight', 14) + '</button>' +
-    '<button class="bm-nav bm-close" data-act="close" title="Close">' + icon('close', 13) + '</button></div>';
+  bar.innerHTML =
+    '<div class="bm-bar-inner"><span class="bm-name" title="' +
+    esc(BOOKMARKS[i].name) +
+    '">' +
+    esc(BOOKMARKS[i].name) +
+    '</span>' +
+    '<button class="bm-nav" data-act="prev" title="Previous bookmark">' +
+    icon('chevronLeft', 14) +
+    '</button>' +
+    '<span class="bm-count">' +
+    (i + 1) +
+    ' of ' +
+    BOOKMARKS.length +
+    '</span>' +
+    '<button class="bm-nav" data-act="next" title="Next bookmark">' +
+    icon('chevronRight', 14) +
+    '</button>' +
+    '<button class="bm-nav bm-close" data-act="close" title="Close">' +
+    icon('close', 13) +
+    '</button></div>';
 }
 
 function initBookmarks() {

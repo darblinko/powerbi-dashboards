@@ -1,8 +1,12 @@
 /* Report runtime: mounts the active page, re-renders visuals on every state change, scales the canvas. */
 (function () {
   'use strict';
-  const M = window.MODEL, F = window.FRAME, P = window.PAGES, C = window.CHROME;
-  const PAGE_W = 1280, PAGE_H = 720;
+  const M = window.MODEL,
+    F = window.FRAME,
+    P = window.PAGES,
+    C = window.CHROME;
+  const PAGE_W = 1280,
+    PAGE_H = 720;
   let mounted = [];
   let signature = '';
   let focusTableEl = null;
@@ -12,7 +16,8 @@
   function footer(pageEl) {
     const f = document.createElement('div');
     f.className = 'page-footer';
-    f.innerHTML = '<span>Sample data generated for demonstration. Not drawn from any real system.</span>' +
+    f.innerHTML =
+      '<span>Sample data generated for demonstration. Not drawn from any real system.</span>' +
       '<span>Tables: Sales (8,100 rows), Customers (9,000 rows), Date, Product, Channel, Device, Geography</span>';
     pageEl.appendChild(f);
   }
@@ -20,7 +25,9 @@
   function build() {
     const s = M.getState();
     const pageEl = document.getElementById('page');
-    F.disposeAll(); F.hideTip(); window.TILEMAP.hidePageTip();
+    F.disposeAll();
+    F.hideTip();
+    window.TILEMAP.hidePageTip();
     pageEl.innerHTML = '';
     mounted = [];
     focusTableEl = null;
@@ -28,10 +35,11 @@
     const items = page.build();
     const focusItem = s.focus ? items.find(it => it[0].id === s.focus) : null;
     if (focusItem) buildFocus(pageEl, focusItem[0], s);
-    else items.forEach(([def, x, y, w, h]) => {
-      if (def.hiddenWhen && def.hiddenWhen()) return;
-      mounted.push(Object.assign({ def }, F.mount(def, pageEl, { x, y, w, h })));
-    });
+    else
+      items.forEach(([def, x, y, w, h]) => {
+        if (def.hiddenWhen && def.hiddenWhen()) return;
+        mounted.push(Object.assign({ def }, F.mount(def, pageEl, { x, y, w, h })));
+      });
     footer(pageEl);
     signature = sig(s);
   }
@@ -39,7 +47,8 @@
   function buildFocus(pageEl, def, s) {
     const back = document.createElement('button');
     back.className = 'focus-back';
-    back.innerHTML = '<svg viewBox="0 0 16 16" width="14" height="14"><path d="M10 3L5 8l5 5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg><span>Back to report</span>';
+    back.innerHTML =
+      '<svg viewBox="0 0 16 16" width="14" height="14"><path d="M10 3L5 8l5 5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg><span>Back to report</span>';
     back.addEventListener('click', () => M.setState({ focus: null, focusTable: false }));
     pageEl.appendChild(back);
     const h = s.focusTable ? 330 : 652;
@@ -55,14 +64,27 @@
   function renderFocusTable() {
     if (!focusTableEl || !mounted[0]) return;
     const d = mounted[0].def.data();
-    const display = v => (typeof v === 'number' ? (Number.isInteger(v) ? v.toLocaleString('en-US') : v.toLocaleString('en-US', { maximumFractionDigits: 4 })) : v);
-    focusTableEl.innerHTML = '<div class="vtitle">Data in this visual (' + d.rows.length + ' rows)</div><div class="vbody table-scroll">' +
-      F.tableHtml({ columns: d.columns, numeric: d.numeric, rows: d.rows, display }) + '</div>';
+    const display = v =>
+      typeof v === 'number'
+        ? Number.isInteger(v)
+          ? v.toLocaleString('en-US')
+          : v.toLocaleString('en-US', { maximumFractionDigits: 4 })
+        : v;
+    focusTableEl.innerHTML =
+      '<div class="vtitle">Data in this visual (' +
+      d.rows.length +
+      ' rows)</div><div class="vbody table-scroll">' +
+      F.tableHtml({ columns: d.columns, numeric: d.numeric, rows: d.rows, display }) +
+      '</div>';
   }
 
   function renderAll() {
     mounted.forEach(m => {
-      try { m.def.render(m.body, m.def); } catch (err) { console.error('Render failed for visual ' + m.def.id, err); }
+      try {
+        m.def.render(m.body, m.def);
+      } catch (err) {
+        console.error('Render failed for visual ' + m.def.id, err);
+      }
       F.refreshHeader(m.def);
     });
     renderFocusTable();
@@ -81,7 +103,11 @@
   }
 
   function onChange(s, meta) {
-    if (meta.uiOnly) { applyUi(); C.renderFilters(); return; }
+    if (meta.uiOnly) {
+      applyUi();
+      C.renderFilters();
+      return;
+    }
     if (meta.rebuild || sig(s) !== signature) build();
     renderAll();
     C.renderPages();
@@ -92,9 +118,11 @@
     const wrap = document.getElementById('canvasWrap');
     const holder = document.getElementById('pageHolder');
     const page = document.getElementById('page');
-    const availW = wrap.clientWidth - 24, availH = wrap.clientHeight - 24;
+    const availW = wrap.clientWidth - 24,
+      availH = wrap.clientHeight - 24;
     const view = C.ui.view;
-    const scale = view === 'actual' ? 1 : view === 'width' ? availW / PAGE_W : Math.min(availW / PAGE_W, availH / PAGE_H);
+    const scale =
+      view === 'actual' ? 1 : view === 'width' ? availW / PAGE_W : Math.min(availW / PAGE_W, availH / PAGE_H);
     holder.style.width = PAGE_W * scale + 'px';
     holder.style.height = PAGE_H * scale + 'px';
     page.style.transform = 'scale(' + scale + ')';
@@ -112,13 +140,17 @@
     document.addEventListener('keydown', e => {
       if (e.key === 'Escape' && M.getState().focus) M.setState({ focus: null, focusTable: false });
     });
-    document.getElementById('zoomFit').addEventListener('click', () => { C.ui.view = 'fit'; fit(); });
+    document.getElementById('zoomFit').addEventListener('click', () => {
+      C.ui.view = 'fit';
+      fit();
+    });
     window.addEventListener('resize', fit);
   }
 
   function start() {
     if (typeof echarts === 'undefined') {
-      document.getElementById('page').innerHTML = '<div class="load-error">ECharts could not be loaded from cdnjs.cloudflare.com. Charts require network access to the CDN.</div>';
+      document.getElementById('page').innerHTML =
+        '<div class="load-error">ECharts could not be loaded from cdnjs.cloudflare.com. Charts require network access to the CDN.</div>';
       return;
     }
     C.init();

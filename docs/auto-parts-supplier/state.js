@@ -5,10 +5,21 @@
 
   let cardSeq = 0;
   function card(field, opts) {
-    return Object.assign({
-      id: 'fc' + (++cardSeq), field, type: 'basic', values: null, op: 'is', advValue: '',
-      topN: { dir: 'Top', n: 5, by: 'Downtime hours' }, locked: false, expanded: false, implicit: false
-    }, opts || {});
+    return Object.assign(
+      {
+        id: 'fc' + ++cardSeq,
+        field,
+        type: 'basic',
+        values: null,
+        op: 'is',
+        advValue: '',
+        topN: { dir: 'Top', n: 5, by: 'Downtime hours' },
+        locked: false,
+        expanded: false,
+        implicit: false
+      },
+      opts || {}
+    );
   }
 
   function initialState() {
@@ -72,10 +83,12 @@
     const measure = M.MEASURES[c.topN.by];
     if (!measure) return null;
     const values = M.fieldValues(c.field, rolePlant());
-    const scored = values.map(v => {
-      const rows = M.filterRows(measure.table, baseFilters.concat([{ field: c.field, values: new Set([v]) }]));
-      return { v, score: measure.fn(rows) };
-    }).filter(x => x.score !== null);
+    const scored = values
+      .map(v => {
+        const rows = M.filterRows(measure.table, baseFilters.concat([{ field: c.field, values: new Set([v]) }]));
+        return { v, score: measure.fn(rows) };
+      })
+      .filter(x => x.score !== null);
     scored.sort((a, b) => (c.topN.dir === 'Top' ? b.score - a.score : a.score - b.score));
     const n = Math.max(1, parseInt(c.topN.n, 10) || 1);
     return { field: c.field, values: new Set(scored.slice(0, n).map(x => x.v)), source: 'topn', card: c };
@@ -87,27 +100,53 @@
     const o = Object.assign({ selection: true, exclude: [] }, opts || {});
     const out = [];
     const plant = rolePlant();
-    if (plant) out.push({ field: 'Plant', values: new Set([plant]), source: 'rls', label: 'Row-level security: ' + S.role });
-    S.filtersAll.forEach(c => { const f = cardToFilter(c); if (f) out.push(Object.assign(f, { label: 'Filters on all pages' })); });
-    (S.filtersPage[pageId] || []).forEach(c => { const f = cardToFilter(c); if (f) out.push(Object.assign(f, { label: 'Filters on this page' })); });
+    if (plant)
+      out.push({ field: 'Plant', values: new Set([plant]), source: 'rls', label: 'Row-level security: ' + S.role });
+    S.filtersAll.forEach(c => {
+      const f = cardToFilter(c);
+      if (f) out.push(Object.assign(f, { label: 'Filters on all pages' }));
+    });
+    (S.filtersPage[pageId] || []).forEach(c => {
+      const f = cardToFilter(c);
+      if (f) out.push(Object.assign(f, { label: 'Filters on this page' }));
+    });
     const sl = S.slicers[pageId] || {};
     Object.keys(sl).forEach(field => {
-      if (sl[field] && sl[field].size) out.push({ field, values: new Set(sl[field]), source: 'slicer', label: 'Slicer' });
+      if (sl[field] && sl[field].size)
+        out.push({ field, values: new Set(sl[field]), source: 'slicer', label: 'Slicer' });
     });
     if (pageId === 'machine' && S.drillthrough) {
-      out.push({ field: 'Machine', values: new Set([S.drillthrough.machine]), source: 'drillthrough', label: 'Drillthrough' });
+      out.push({
+        field: 'Machine',
+        values: new Set([S.drillthrough.machine]),
+        source: 'drillthrough',
+        label: 'Drillthrough'
+      });
     }
     const vcards = S.filtersVisual[visualId] || [];
-    vcards.forEach(c => { const f = cardToFilter(c); if (f) out.push(Object.assign(f, { label: 'Filters on this visual' })); });
+    vcards.forEach(c => {
+      const f = cardToFilter(c);
+      if (f) out.push(Object.assign(f, { label: 'Filters on this visual' }));
+    });
     const sel = S.selection[pageId];
     if (o.selection && sel && sel.visualId !== visualId) {
-      out.push({ field: sel.field, values: new Set(sel.values), source: 'selection', label: 'Cross-filter from ' + (sel.title || 'visual') });
+      out.push({
+        field: sel.field,
+        values: new Set(sel.values),
+        source: 'selection',
+        label: 'Cross-filter from ' + (sel.title || 'visual')
+      });
     }
     const filtered = out.filter(f => o.exclude.indexOf(f.field) === -1);
-    vcards.filter(c => c.type === 'topn' && o.exclude.indexOf(c.field) === -1).forEach(c => {
-      const f = topNFilter(c, filtered.filter(x => x.field !== c.field));
-      if (f) filtered.push(Object.assign(f, { label: 'Filters on this visual' }));
-    });
+    vcards
+      .filter(c => c.type === 'topn' && o.exclude.indexOf(c.field) === -1)
+      .forEach(c => {
+        const f = topNFilter(
+          c,
+          filtered.filter(x => x.field !== c.field)
+        );
+        if (f) filtered.push(Object.assign(f, { label: 'Filters on this visual' }));
+      });
     return filtered;
   }
 
@@ -116,7 +155,8 @@
     if (cur && cur.visualId === visualId && cur.field === field) {
       const vals = new Set(cur.values);
       if (multi) {
-        if (vals.has(value)) vals.delete(value); else vals.add(value);
+        if (vals.has(value)) vals.delete(value);
+        else vals.add(value);
       } else if (vals.size === 1 && vals.has(value)) {
         vals.clear();
       } else {
@@ -130,11 +170,28 @@
   }
 
   window.PBI_STATE = {
-    get S() { return S; },
-    reset() { const keepPage = S.page, role = S.role, viewAs = S.viewAs; S = initialState(); S.role = role; S.viewAs = viewAs; S.page = keepPage === 'machine' ? 'plant' : keepPage; },
+    get S() {
+      return S;
+    },
+    reset() {
+      const keepPage = S.page,
+        role = S.role,
+        viewAs = S.viewAs;
+      S = initialState();
+      S.role = role;
+      S.viewAs = viewAs;
+      S.page = keepPage === 'machine' ? 'plant' : keepPage;
+    },
     /* Bookmark reset: every piece of report state returns to default, including View as.
        The zoom mode is a viewer setting and is kept. */
-    resetFull() { const fitMode = S.fitMode; S = initialState(); S.fitMode = fitMode; },
-    card, rolePlant, filterContext, select
+    resetFull() {
+      const fitMode = S.fitMode;
+      S = initialState();
+      S.fitMode = fitMode;
+    },
+    card,
+    rolePlant,
+    filterContext,
+    select
   };
 })();

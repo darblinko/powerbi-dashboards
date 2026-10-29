@@ -5,7 +5,11 @@ const PAGE_H = 720;
 const PAGES = [
   { id: 'overview', name: 'Production Overview', subtitle: 'Batch output, yield and the three-week line schedule' },
   { id: 'quality', name: 'Quality and Release', subtitle: 'OOS results, forecast, anomalies and batch disposition' },
-  { id: 'customer', name: 'Customer Scorecard', subtitle: 'Revenue, delivery and complaint performance by brand owner' },
+  {
+    id: 'customer',
+    name: 'Customer Scorecard',
+    subtitle: 'Revenue, delivery and complaint performance by brand owner'
+  },
   { id: 'batch', name: 'Batch Record', subtitle: 'Drillthrough page', hidden: true }
 ];
 const charts = {};
@@ -15,24 +19,47 @@ let zoomFactor = 1;
 
 const $ = (sel, root) => (root || document).querySelector(sel);
 const $$ = (sel, root) => [...(root || document).querySelectorAll(sel)];
-const esc = s => String(s).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+const esc = s =>
+  String(s).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[ch]);
 
 /* ---------- tooltip and ECharts styling helpers used by visuals ---------- */
 const TT = {
-  backgroundColor: '#3B3A39', borderWidth: 0, padding: [6, 10], confine: true,
+  backgroundColor: '#3B3A39',
+  borderWidth: 0,
+  padding: [6, 10],
+  confine: true,
   textStyle: { color: '#FFFFFF', fontSize: 11, fontFamily: FONT },
   extraCssText: 'border-radius:2px;box-shadow:0 2px 8px rgba(0,0,0,.28);'
 };
 function ttHtml(rows) {
-  return rows.map(([k, v]) => '<div style="display:flex;justify-content:space-between;gap:16px;line-height:18px">' +
-    '<span style="color:#C8C6C4">' + esc(k) + '</span><span style="font-weight:600">' + esc(v) + '</span></div>').join('');
+  return rows
+    .map(
+      ([k, v]) =>
+        '<div style="display:flex;justify-content:space-between;gap:16px;line-height:18px">' +
+        '<span style="color:#C8C6C4">' +
+        esc(k) +
+        '</span><span style="font-weight:600">' +
+        esc(v) +
+        '</span></div>'
+    )
+    .join('');
 }
 const AXIS_LABEL = { color: '#605E5C', fontSize: 10, fontFamily: FONT };
 const AXIS_NAME = { color: '#605E5C', fontSize: 10, fontFamily: FONT };
 const GRID_LINE = { lineStyle: { color: '#EDEBE9', width: 1 } };
-const LEGEND = { left: 0, top: 0, icon: 'circle', itemWidth: 8, itemHeight: 8, itemGap: 12, textStyle: { color: '#605E5C', fontSize: 10, fontFamily: FONT } };
+const LEGEND = {
+  left: 0,
+  top: 0,
+  icon: 'circle',
+  itemWidth: 8,
+  itemHeight: 8,
+  itemGap: 12,
+  textStyle: { color: '#605E5C', fontSize: 10, fontFamily: FONT }
+};
 const isCtrl = p => !!(p && p.event && p.event.event && (p.event.event.ctrlKey || p.event.event.metaKey));
-function fade(color, opacity) { return { color, opacity }; }
+function fade(color, opacity) {
+  return { color, opacity };
+}
 
 function chartFor(vid, el) {
   if (!charts[vid] || charts[vid].isDisposed()) {
@@ -51,7 +78,12 @@ function setSelection(sel) {
 }
 function select(vid, key, additive) {
   if (!key || !Object.keys(key).length) return;
-  const sig = k => JSON.stringify(Object.keys(k).sort().map(f => [f, k[f]]));
+  const sig = k =>
+    JSON.stringify(
+      Object.keys(k)
+        .sort()
+        .map(f => [f, k[f]])
+    );
   let keys = S.selection && S.selection.source === vid ? S.selection.keys : [];
   const exists = keys.some(k => sig(k) === sig(key));
   if (additive) keys = exists ? keys.filter(k => sig(k) !== sig(key)) : [...keys, key];
@@ -72,15 +104,19 @@ function drillAction(vid, action) {
   const d = drillState(vid);
   const max = VIS[vid].hierarchy.length - 1;
   if (action === 'up') {
-    if (d.path.length) { d.path = d.path.slice(0, -1); d.level = Math.max(0, d.level - 1); }
-    else if (d.level > 0) d.level -= 1;
+    if (d.path.length) {
+      d.path = d.path.slice(0, -1);
+      d.level = Math.max(0, d.level - 1);
+    } else if (d.level > 0) d.level -= 1;
     if (d.level === 0) d.flat = false;
   } else if (action === 'mode') {
     d.mode = !d.mode;
   } else if (action === 'next' && d.level < max) {
-    d.level += 1; d.flat = d.path.length === 0;
+    d.level += 1;
+    d.flat = d.path.length === 0;
   } else if (action === 'expand' && d.level < max) {
-    d.level += 1; d.flat = false;
+    d.level += 1;
+    d.flat = false;
   }
   if (S.selection && S.selection.source === vid) S.selection = null;
   renderAll();
@@ -90,7 +126,8 @@ function drillInto(vid, value) {
   const levels = VIS[vid].hierarchy;
   if (d.level >= levels.length - 1) return false;
   d.path = [...d.path, { level: levels[d.level], value }];
-  d.level += 1; d.flat = false;
+  d.level += 1;
+  d.flat = false;
   if (S.selection && S.selection.source === vid) S.selection = null;
   renderAll();
   return true;
@@ -110,14 +147,27 @@ function openDrillthrough(batchId) {
 }
 function goToPage(id) {
   S.page = id;
-  S.selection = null; S.focus = null; S.tableView = null; S.selectedVisual = null; S.spotlight = null;
+  S.selection = null;
+  S.focus = null;
+  S.tableView = null;
+  S.selectedVisual = null;
+  S.spotlight = null;
   closeMenus();
   renderAll();
 }
 
 /* ---------- frames ---------- */
 function headerIcons(v) {
-  const btn = (act, ic, title, extra) => '<button class="vh-btn ' + (extra || '') + '" data-act="' + act + '" title="' + title + '">' + icon(ic, 14) + '</button>';
+  const btn = (act, ic, title, extra) =>
+    '<button class="vh-btn ' +
+    (extra || '') +
+    '" data-act="' +
+    act +
+    '" title="' +
+    title +
+    '">' +
+    icon(ic, 14) +
+    '</button>';
   let h = '';
   if (v.hierarchy) {
     const d = drillState(v.id);
@@ -145,7 +195,10 @@ function buildFrame(v) {
   el.dataset.vid = v.id;
   const [x, y, w, h] = v.pos;
   Object.assign(el.style, { left: x + 'px', top: y + 'px', width: w + 'px', height: h + 'px' });
-  el.innerHTML = '<div class="vh">' + (v.noHeader ? '' : headerIcons(v)) + '</div>' +
+  el.innerHTML =
+    '<div class="vh">' +
+    (v.noHeader ? '' : headerIcons(v)) +
+    '</div>' +
     (v.hideTitle ? '' : '<div class="v-title">' + visualTitle(v) + '</div>') +
     '<div class="v-body"></div><div class="v-table"></div>';
   el.addEventListener('mousedown', () => selectVisual(v.id));
@@ -167,27 +220,42 @@ function selectVisual(vid) {
 
 function onHeaderAction(vid, act, btn) {
   if (['up', 'mode', 'next', 'expand'].includes(act)) return drillAction(vid, act);
-  if (act === 'focus') { S.focus = S.focus === vid ? null : vid; S.tableView = null; return renderAll(); }
+  if (act === 'focus') {
+    S.focus = S.focus === vid ? null : vid;
+    S.tableView = null;
+    return renderAll();
+  }
   const r = btn.getBoundingClientRect();
   if (act === 'filters') return showFilterPopover(vid, r);
   if (act === 'menu') return showVisualMenu(vid, r);
 }
 
-function pageVisuals() { return Object.values(VIS).filter(v => v.page === S.page); }
+function pageVisuals() {
+  return Object.values(VIS).filter(v => v.page === S.page);
+}
 
 function buildPage() {
-  Object.keys(charts).forEach(k => { charts[k].dispose(); delete charts[k]; });
+  Object.keys(charts).forEach(k => {
+    charts[k].dispose();
+    delete charts[k];
+  });
   const page = $('#page');
   page.innerHTML = '';
   const meta = PAGES.find(p => p.id === S.page);
   const band = document.createElement('div');
   band.className = 'band';
-  band.innerHTML = (S.page === 'batch'
-    ? '<button class="back-btn" id="back-btn" title="Back">' + icon('back', 16) + '<span>Back</span></button>'
-    : '') + '<div class="band-text"><div class="band-title">' + esc(meta.name) + '</div><div class="band-sub">' +
-    esc(meta.subtitle) + ' | Data through 9/27/26</div></div><div class="band-slicers"></div>';
+  band.innerHTML =
+    (S.page === 'batch'
+      ? '<button class="back-btn" id="back-btn" title="Back">' + icon('back', 16) + '<span>Back</span></button>'
+      : '') +
+    '<div class="band-text"><div class="band-title">' +
+    esc(meta.name) +
+    '</div><div class="band-sub">' +
+    esc(meta.subtitle) +
+    ' | Data through 9/27/26</div></div><div class="band-slicers"></div>';
   page.appendChild(band);
-  if (S.page === 'batch') band.querySelector('#back-btn').addEventListener('click', () => goToPage(S.drillReturn || 'overview'));
+  if (S.page === 'batch')
+    band.querySelector('#back-btn').addEventListener('click', () => goToPage(S.drillReturn || 'overview'));
   else renderSlicers(band.querySelector('.band-slicers'));
   for (const v of pageVisuals()) page.appendChild(buildFrame(v));
   const foot = document.createElement('div');
@@ -197,7 +265,11 @@ function buildPage() {
   const back = document.createElement('button');
   back.className = 'focus-back';
   back.innerHTML = icon('chevronLeft', 14) + '<span>Back to report</span>';
-  back.addEventListener('click', () => { S.focus = null; S.tableView = null; renderAll(); });
+  back.addEventListener('click', () => {
+    S.focus = null;
+    S.tableView = null;
+    renderAll();
+  });
   page.appendChild(back);
   builtPage = S.page;
 }
@@ -255,8 +327,12 @@ function fitPage() {
   const wrap = $('#page-wrap');
   const availW = canvas.clientWidth - 32;
   const availH = canvas.clientHeight - 32;
-  let scale = zoomMode === 'fit' ? Math.min(availW / PAGE_W, availH / PAGE_H)
-    : zoomMode === 'width' ? availW / PAGE_W : zoomFactor;
+  let scale =
+    zoomMode === 'fit'
+      ? Math.min(availW / PAGE_W, availH / PAGE_H)
+      : zoomMode === 'width'
+        ? availW / PAGE_W
+        : zoomFactor;
   scale = Math.max(0.2, scale);
   wrap.style.width = PAGE_W * scale + 'px';
   wrap.style.height = PAGE_H * scale + 'px';
@@ -266,9 +342,22 @@ function fitPage() {
 }
 
 function initZoom() {
-  $('#zoom-select').addEventListener('change', e => { zoomMode = e.target.value; fitPage(); });
-  $('#zoom-out').addEventListener('click', () => { zoomMode = 'manual'; zoomFactor = Math.max(0.3, zoomFactor - 0.1); $('#zoom-select').value = 'manual'; fitPage(); });
-  $('#zoom-in').addEventListener('click', () => { zoomMode = 'manual'; zoomFactor = Math.min(2, zoomFactor + 0.1); $('#zoom-select').value = 'manual'; fitPage(); });
+  $('#zoom-select').addEventListener('change', e => {
+    zoomMode = e.target.value;
+    fitPage();
+  });
+  $('#zoom-out').addEventListener('click', () => {
+    zoomMode = 'manual';
+    zoomFactor = Math.max(0.3, zoomFactor - 0.1);
+    $('#zoom-select').value = 'manual';
+    fitPage();
+  });
+  $('#zoom-in').addEventListener('click', () => {
+    zoomMode = 'manual';
+    zoomFactor = Math.min(2, zoomFactor + 0.1);
+    $('#zoom-select').value = 'manual';
+    fitPage();
+  });
   new ResizeObserver(fitPage).observe($('#canvas'));
 }
 
@@ -279,13 +368,24 @@ function init() {
   $('#canvas').addEventListener('mousedown', e => {
     if (e.target.id === 'canvas' || e.target.id === 'page-wrap') {
       S.selectedVisual = null;
-      if (S.spotlight) { S.spotlight = null; renderAll(); } else { applyFrameStates(); renderFiltersPane(); }
+      if (S.spotlight) {
+        S.spotlight = null;
+        renderAll();
+      } else {
+        applyFrameStates();
+        renderFiltersPane();
+      }
     }
   });
   document.addEventListener('keydown', e => {
     if (e.key !== 'Escape') return;
     closeMenus();
-    if (S.focus || S.tableView || S.spotlight) { S.focus = null; S.tableView = null; S.spotlight = null; renderAll(); }
+    if (S.focus || S.tableView || S.spotlight) {
+      S.focus = null;
+      S.tableView = null;
+      S.spotlight = null;
+      renderAll();
+    }
   });
   renderAll();
   fitPage();
