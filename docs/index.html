@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>pbi-portfolio</title>
+    <meta
+      name="description"
+      content="Four browser dashboards that reproduce Power BI report features in plain JavaScript, on seeded fictional data."
+    />
+    <link rel="icon" href="data:," />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&family=IBM+Plex+Sans:wght@400;600&display=swap"
+    />
+    <link rel="stylesheet" href="site.css" />
+    <style>
+      .shot {
+        margin: 16px 0 8px;
+      }
+      .shot img {
+        display: block;
+        width: 100%;
+        height: auto;
+        border: 1px solid var(--rule);
+      }
+      .shot figcaption {
+        color: var(--muted);
+        font-size: 14px;
+        margin-top: 6px;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-bar">
+      <a href="https://darblinko.github.io/">Mitchell Foutz</a>
+      <a href="https://github.com/darblinko/pbi-portfolio">Source on GitHub</a>
+    </header>
+
+    <main>
+      <section class="intro">
+        <h1>pbi-portfolio</h1>
+        <p class="lede">
+          Four browser dashboards that reproduce Power BI report features in plain JavaScript and ECharts: slicers,
+          cross-filtering, drillthrough, bookmarks, report page tooltips and a row-level security preview. Every row of
+          data is generated from a seeded pseudo-random generator and describes fictional organizations. The pages are
+          static files with no build step. Not affiliated with Microsoft.
+        </p>
+        <dl class="record">
+          <div>
+            <dt>Repository</dt>
+            <dd>darblinko/pbi-portfolio</dd>
+          </div>
+          <div>
+            <dt>Data revision</dt>
+            <dd><code>713a321</code></dd>
+          </div>
+          <div>
+            <dt>Generated</dt>
+            <dd>2026-10-28</dd>
+          </div>
+          <div>
+            <dt>License</dt>
+            <dd>Apache-2.0</dd>
+          </div>
+        </dl>
+      </section>
+
+      <section>
+        <h2>Dashboards</h2>
+        <p>
+          Each dashboard opens in the browser with its report pages, filters pane and bookmarks. Click a visual to
+          cross-filter the page. Open the visual header menu for focus mode, show as table, CSV export, spotlight and
+          View DAX. In the auto parts, supplement and device dashboards, right-click a data point to drill through.
+        </p>
+
+        <h3><a href="online-retailer/">Online retailer</a></h3>
+        <p>
+          E-commerce sales, Oct 2023 to Sep 2026. Pages: Executive Summary, Customer and Retention, Funnel and What-if,
+          plus a hidden report page tooltip for the state tile map. Reproduces the tile map, a cohort retention matrix,
+          key influencers and top segments, a conversion funnel, a what-if parameter, a Q&amp;A visual and Get insights.
+        </p>
+        <figure class="shot">
+          <a href="online-retailer/"
+            ><img
+              src="figures/online-retailer.png"
+              width="1280"
+              height="800"
+              loading="lazy"
+              alt="Online retailer Executive Summary page with KPI cards, revenue by month, a state tile map and revenue by channel, category and device."
+          /></a>
+          <figcaption>Executive Summary page, docs/figures/online-retailer.png.</figcaption>
+        </figure>
+
+        <h3><a href="auto-parts-supplier/">Auto parts supplier</a></h3>
+        <p>
+          Four plants, Oct 2025 to Sep 2026. Pages: Plant Performance, Cost and Variance, Supplier Quality, Plant Access
+          (RLS), plus a hidden Machine Detail drillthrough page. Reproduces a gauge, a field parameter, a Pareto chart,
+          a waterfall, a ribbon chart, a matrix, a scatter chart with a play axis, and View as for four security roles.
+        </p>
+        <figure class="shot">
+          <a href="auto-parts-supplier/"
+            ><img
+              src="figures/auto-parts-supplier.png"
+              width="1280"
+              height="800"
+              loading="lazy"
+              alt="Auto parts supplier Plant Performance page with OEE gauges for four plants, OEE by month and by shift, and a downtime Pareto chart."
+          /></a>
+          <figcaption>Plant Performance page, docs/figures/auto-parts-supplier.png.</figcaption>
+        </figure>
+
+        <h3><a href="supplement-cmo/">Supplement manufacturer</a></h3>
+        <p>
+          Contract manufacturing of dietary supplements over 90 weeks from 6 Jan 2025. Pages: Production Overview,
+          Quality and Release, Customer Scorecard, plus a hidden Batch Record drillthrough page. Reproduces a Gantt
+          schedule, a treemap, a forecast with anomaly detection, a smart narrative, small multiples and a batch
+          genealogy view.
+        </p>
+        <figure class="shot">
+          <a href="supplement-cmo/"
+            ><img
+              src="figures/supplement-cmo.png"
+              width="1280"
+              height="800"
+              loading="lazy"
+              alt="Supplement manufacturer Production Overview page with KPI cards, a three-week line schedule, weekly batches and yield, and a treemap of batches by customer."
+          /></a>
+          <figcaption>Production Overview page, docs/figures/supplement-cmo.png.</figcaption>
+        </figure>
+
+        <h3><a href="device-quality/">Device quality</a></h3>
+        <p>
+          Post-market surveillance for a fictional infusion pump family, Jan 2024 to Sep 2026. Pages: Quality Overview,
+          Complaint Trending, CAPA Effectiveness, plus a hidden Complaint Detail drillthrough page. Reproduces an
+          individuals control chart, a reportability funnel, a 30-day MDR clock, a decomposition tree and a smart
+          narrative.
+        </p>
+        <figure class="shot">
+          <a href="device-quality/"
+            ><img
+              src="figures/device-quality.png"
+              width="1280"
+              height="800"
+              loading="lazy"
+              alt="Device quality Quality Overview page with KPI cards, complaints by quarter and category, and a failure mode matrix."
+          /></a>
+          <figcaption>Quality Overview page, docs/figures/device-quality.png.</figcaption>
+        </figure>
+        <aside class="note">
+          <p>
+            Page lists: <code>docs/*/pages.js</code>, <code>docs/supplement-cmo/app.js</code>,
+            <code>docs/device-quality/page4.js</code>. Each dashboard defines 10 bookmarks in
+            <code>docs/*/bookmarks.js</code>.
+          </p>
+          <p>Security roles: <code>ROLES</code> in <code>docs/auto-parts-supplier/model.js</code>.</p>
+        </aside>
+      </section>
+
+      <section>
+        <h2>Problem</h2>
+        <p>
+          Viewing a Power BI report needs Power BI Desktop or a Power BI service account, and reports built on employer
+          or client data stay inside that organization. These pages show the same report interactions in any browser, on
+          fictional data.
+        </p>
+        <p>
+          The data carries planted signals for the reports to find. In the device data, Infusion Pump Model B receives
+          34, 72 and 41 extra premature depletion complaints in July, August and September 2025, and the Charger
+          receives 31 and 24 extra charging failure complaints in Europe in February and March 2026. Bookmarks in
+          <code>docs/device-quality/bookmarks.js</code> open views of both.
+        </p>
+        <aside class="note">
+          <p>
+            Planted anomalies: <code>docs/device-quality/data.js</code>, the two blocks commented "Planted anomaly".
+          </p>
+        </aside>
+      </section>
+
+      <section>
+        <h2>How it works</h2>
+        <p>
+          Each dashboard is one HTML page and a set of classic scripts. <code>data.js</code> builds the dimension and
+          fact tables from a fixed seed. <code>model.js</code> holds the fields, the filter context function and the
+          measures. The page and visual scripts render ECharts charts and HTML tables from the measures. Interactions
+          update a report state object, and bookmarks save and restore it.
+        </p>
+        <pre class="mermaid">
+flowchart LR
+  seed[Seed literal] --> data[data.js: PRNG builds tables]
+  data --> model[model.js: fields, filter context, measures]
+  state[Report state: slicers, selection, drill, bookmark, role] --> model
+  model --> visuals[Page scripts: ECharts and HTML tables]
+  visuals -- click, select, drill --> state
+      </pre>
+        <aside class="note">
+          <p>
+            Seeds: 20261001 in the online retailer, supplement and device <code>data.js</code>; 16949 in the auto parts
+            <code>data.js</code>. ECharts 5.5.0 loads from cdnjs.
+          </p>
+        </aside>
+      </section>
+
+      <section>
+        <h2>Generated data</h2>
+        <p>
+          Row counts and series below are computed by running each <code>data.js</code> in Node.js. They describe the
+          fictional data the pages render. They are not measurements of a real system.
+        </p>
+        <figure class="chart" data-chart="fact-rows"></figure>
+        <figure class="chart" data-chart="model-b-complaints"></figure>
+        <figure class="chart" data-chart="supplier-ppm"></figure>
+        <figure class="chart" data-chart="retail-revenue"></figure>
+        <figure class="chart" data-chart="batch-disposition"></figure>
+        <aside class="note">
+          <p>
+            Reproduce: <code>npm run build:data</code> writes <code>docs/data.json</code>. <code>npm test</code> fails
+            when that file is out of date.
+          </p>
+        </aside>
+      </section>
+
+      <section>
+        <h2>Run it</h2>
+        <ol class="steps">
+          <li>
+            <pre><code>git clone https://github.com/darblinko/pbi-portfolio
+cd pbi-portfolio</code></pre>
+          </li>
+          <li>
+            <pre><code>python3 -m http.server 8000 --directory docs</code></pre>
+          </li>
+          <li>Open <code>http://127.0.0.1:8000/</code> and pick a dashboard.</li>
+          <li>
+            <pre><code>npm ci
+npm run lint
+npm test
+npx playwright install chromium
+npm run smoke</code></pre>
+          </li>
+        </ol>
+        <aside class="note">
+          <p>Steps 1 to 3 need only Python 3 and network access to cdnjs. Step 4 needs Node.js 20 or later.</p>
+        </aside>
+      </section>
+
+      <section>
+        <h2>Limitations</h2>
+        <ul>
+          <li>
+            All data is fictional. Company, supplier and customer names are fictional; product names and specification
+            limits are invented.
+          </li>
+          <li>
+            Measures are JavaScript functions. View DAX shows equivalent DAX text; nothing parses or evaluates DAX.
+          </li>
+          <li>The Q&amp;A visual matches a fixed grammar of measure, dimension, Top N and filter phrases.</li>
+          <li>Service actions such as Share, Subscribe and Edit show a notice that they are not available.</li>
+          <li>
+            The report canvas is laid out for a desktop browser window and scales down; there is no mobile layout.
+          </li>
+          <li>ECharts loads from a CDN, so the pages do not render charts offline.</li>
+        </ul>
+      </section>
+    </main>
+
+    <footer>
+      pbi-portfolio. Apache-2.0. Not affiliated with Microsoft. Figures generated from <code>docs/data.json</code> at
+      <code>713a321</code>.
+    </footer>
+
+    <script src="charts.js" defer></script>
+    <script type="module">
+      import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.esm.min.mjs';
+      const dark =
+        document.documentElement.dataset.theme === 'dark' ||
+        (document.documentElement.dataset.theme !== 'light' && matchMedia('(prefers-color-scheme: dark)').matches);
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: dark ? 'dark' : 'neutral',
+        fontFamily: 'IBM Plex Sans, system-ui, sans-serif',
+        securityLevel: 'strict'
+      });
+    </script>
+  </body>
+</html>
