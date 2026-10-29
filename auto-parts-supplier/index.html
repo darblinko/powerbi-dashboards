@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Plant Operations and Supplier Quality</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="visuals.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+</head>
+<body>
+<header id="appbar">
+  <button class="ab-icon" data-icon="waffle" title="App launcher"></button>
+  <span class="ab-brand">Power BI</span>
+  <nav class="ab-crumb"><span class="crumb">Manufacturing Ops</span><span class="crumb-sep">&gt;</span><span class="crumb strong">Plant Operations and Supplier Quality</span><span class="crumb-chev" data-icon="chevronDown"></span></nav>
+  <div class="ab-search"><span data-icon="search"></span><input type="text" placeholder="Search" aria-label="Search"></div>
+  <div class="ab-right">
+    <span class="ab-trial">Trial: 54 days left</span>
+    <button class="ab-icon" data-icon="bell" title="Notifications"></button>
+    <button class="ab-icon" data-icon="settings" title="Settings"></button>
+    <button class="ab-icon" data-icon="download" title="Download"></button>
+    <button class="ab-icon" data-icon="help" title="Help and support"></button>
+    <button class="ab-icon" data-icon="feedback" title="Feedback"></button>
+    <span class="ab-avatar" title="Account manager">MO</span>
+  </div>
+</header>
+<div id="actionbar">
+  <button class="act" data-menu="file"><span data-icon="file"></span>File<span class="chev" data-icon="chevronDown"></span></button>
+  <button class="act" data-menu="export"><span data-icon="exportIcon"></span>Export<span class="chev" data-icon="chevronDown"></span></button>
+  <button class="act" data-act="share"><span data-icon="share"></span>Share</button>
+  <button class="act" data-act="teams"><span data-icon="teams"></span>Chat in Teams</button>
+  <button class="act" data-act="insights"><span data-icon="insights"></span>Get insights</button>
+  <button class="act" data-act="subscribe"><span data-icon="subscribe"></span>Subscribe</button>
+  <button class="act" data-act="edit"><span data-icon="edit"></span>Edit</button>
+  <span class="act-sep"></span>
+  <button class="act" data-act="reset"><span data-icon="reset"></span>Reset to default</button>
+  <button class="act" data-menu="bookmarks"><span data-icon="bookmark"></span>Bookmarks<span class="chev" data-icon="chevronDown"></span></button>
+  <button class="act" data-menu="view"><span data-icon="view"></span>View<span class="chev" data-icon="chevronDown"></span></button>
+  <button class="act" data-act="viewas" id="viewasBtn"><span data-icon="viewas"></span>View as</button>
+  <button class="act" data-act="refresh"><span data-icon="refresh"></span>Refresh visuals</button>
+  <span class="act-spacer"></span>
+  <span class="act-updated">Data updated 10/1/26<span class="chev" data-icon="chevronDown"></span></span>
+  <button class="act act-iconbtn" data-act="comment" title="Comments"><span data-icon="comment"></span></button>
+  <button class="act act-iconbtn" data-act="favorite" title="Favorite"><span data-icon="star"></span></button>
+</div>
+<div id="rlsbanner" hidden>
+  <span class="rls-icon" data-icon="viewas"></span>
+  <span>Now viewing as: <b id="rlsRole"></b></span>
+  <button id="rlsStop" class="rls-stop">Stop viewing</button>
+</div>
+<div id="main">
+  <nav id="rail">
+    <button class="rail-item" data-icon="home"><span>Home</span></button>
+    <button class="rail-item" data-icon="create"><span>Create</span></button>
+    <button class="rail-item" data-icon="browse"><span>Browse</span></button>
+    <button class="rail-item" data-icon="onelake"><span>OneLake</span></button>
+    <button class="rail-item" data-icon="apps"><span>Apps</span></button>
+    <button class="rail-item active" data-icon="workspaces"><span>Workspaces</span></button>
+    <button class="rail-item rail-ws" data-icon="pages"><span>Manufacturing Ops</span></button>
+  </nav>
+  <aside id="pagespane">
+    <div class="pp-head"><span>Pages</span><button class="pp-collapse" data-icon="chevronDoubleLeft" title="Collapse"></button></div>
+    <ul id="pagelist"></ul>
+  </aside>
+  <section id="canvaswrap">
+    <div id="focusbar" hidden><button id="focusBack"><span data-icon="back"></span>Back to report</button></div>
+    <div id="pagehost"><div id="pagescaler"><div id="page"></div></div></div>
+    <div id="statusbar">
+      <span id="statusPage"></span>
+      <span class="sb-spacer"></span>
+      <span class="sb-zoom">
+        <button class="sb-btn" data-zoom="-">-</button>
+        <span class="sb-track"><span class="sb-thumb"></span></span>
+        <button class="sb-btn" data-zoom="+">+</button>
+        <span id="zoomPct">100%</span>
+        <button class="sb-fit" data-menu="view" title="Fit to page"><span data-icon="focus"></span></button>
+      </span>
+    </div>
+  </section>
+  <aside id="filterpane"></aside>
+</div>
+<div id="tip" hidden></div>
+<div id="popup-root"></div>
+<script src="icons.js"></script>
+<script src="data.js"></script>
+<script src="model.js"></script>
+<script src="state.js"></script>
+<script src="frame.js"></script>
+<script src="charts-common.js"></script>
+<script src="visuals-plant.js"></script>
+<script src="visuals-cost.js"></script>
+<script src="visuals-supplier.js"></script>
+<script src="visuals-other.js"></script>
+<script src="pages.js"></script>
+<script src="filterpane.js"></script>
+<script src="app.js"></script>
+<script src="bookmarks.js"></script>
+</body>
+</html>

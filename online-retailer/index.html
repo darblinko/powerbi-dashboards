@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>E-Commerce Performance - Power BI</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="visuals.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+</head>
+<body>
+  <header id="appbar"></header>
+  <div id="body">
+    <nav id="rail" aria-label="Navigation"></nav>
+    <div id="main">
+      <div id="actionbar" role="toolbar"></div>
+      <div id="workspace">
+        <aside id="pagesPane"></aside>
+        <section id="canvasWrap">
+          <div id="pageHolder"><div id="page"></div></div>
+        </section>
+        <aside id="filtersPane"></aside>
+      </div>
+      <div id="bookmarkBar" role="region" aria-label="Bookmark bar" hidden></div>
+      <div id="statusbar">
+        <span class="sb-left">E-Commerce Performance</span>
+        <span class="sb-right"><span class="sb-zoom-l">Zoom</span><span id="zoomPct">100%</span>
+          <button id="zoomFit" title="Fit to page" aria-label="Fit to page"><svg viewBox="0 0 16 16" width="14" height="14"><path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4" fill="none" stroke="currentColor" stroke-width="1.3"/></svg></button>
+        </span>
+      </div>
+    </div>
+  </div>
+  <script src="data.js"></script>
+  <script src="model.js"></script>
+  <script src="frame.js"></script>
+  <script src="visuals.js"></script>
+  <script src="tilemap.js"></script>
+  <script src="retention.js"></script>
+  <script src="whatif.js"></script>
+  <script src="qna.js"></script>
+  <script src="pages.js"></script>
+  <script src="bookmarks.js"></script>
+  <script src="chrome.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

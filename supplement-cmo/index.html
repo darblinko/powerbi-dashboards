@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Batch Operations and Customer Performance - Power BI</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+</head>
+<body>
+<header class="appbar">
+  <button class="ab-waffle" title="App launcher"><svg width="16" height="16" viewBox="0 0 16 16"><g fill="#fff"><circle cx="3" cy="3" r="1.3"/><circle cx="8" cy="3" r="1.3"/><circle cx="13" cy="3" r="1.3"/><circle cx="3" cy="8" r="1.3"/><circle cx="8" cy="8" r="1.3"/><circle cx="13" cy="8" r="1.3"/><circle cx="3" cy="13" r="1.3"/><circle cx="8" cy="13" r="1.3"/><circle cx="13" cy="13" r="1.3"/></g></svg></button>
+  <span class="ab-brand">Power BI</span>
+  <nav class="ab-crumb"><span>CMO Operations</span><span class="sep">&gt;</span><span>Batch Operations and Customer Performance</span><span class="sep">&gt;</span><span id="crumb-page"></span></nav>
+  <div class="ab-search"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#C8C6C4" stroke-width="1.3"><circle cx="6.5" cy="6.5" r="4.5"/><path d="M10 10l4.5 4.5"/></svg><input placeholder="Search" aria-label="Search"></div>
+  <div class="ab-right" id="ab-right"></div>
+</header>
+<div class="main">
+  <nav class="rail" id="rail"></nav>
+  <div class="workspace">
+    <div class="actionbar" id="actionbar">
+      <div class="ac-left">
+        <button class="ac-btn" data-ic="file">File <span class="caret"></span></button>
+        <button class="ac-btn" data-ic="export">Export <span class="caret"></span></button>
+        <button class="ac-btn" data-ic="share">Share</button>
+        <button class="ac-btn" data-ic="teams">Chat in Teams</button>
+        <button class="ac-btn" data-ic="insights" id="btn-insights">Get insights</button>
+        <button class="ac-btn" data-ic="subscribe">Subscribe to report</button>
+        <button class="ac-btn" data-ic="edit">Edit</button>
+        <button class="ac-btn ac-more" data-ic="more" title="More options"></button>
+      </div>
+      <div class="ac-right">
+        <button class="ac-btn" data-ic="reset" id="btn-reset">Reset to default</button>
+        <button class="ac-btn" data-ic="bookmark">Bookmarks <span class="caret"></span></button>
+        <button class="ac-btn" data-ic="view">View <span class="caret"></span></button>
+        <button class="ac-btn" data-ic="refresh" id="btn-refresh">Refresh visuals</button>
+        <span class="ac-updated">Data updated 10/1/26</span>
+      </div>
+    </div>
+    <div class="content">
+      <aside class="pages-pane" id="pages-pane">
+        <div class="pp-head"><span>Pages</span><button id="btn-pages-collapse" class="pp-collapse" title="Collapse pages"></button></div>
+        <div id="pages-list"></div>
+      </aside>
+      <section class="canvas-col">
+        <div class="canvas" id="canvas">
+          <div id="page-wrap"><div id="page"></div></div>
+        </div>
+        <div class="statusbar">
+          <span class="sb-text">Batch Operations and Customer Performance</span>
+          <div class="sb-zoom">
+            <button id="zoom-out" title="Zoom out">-</button>
+            <span id="zoom-pct">100%</span>
+            <button id="zoom-in" title="Zoom in">+</button>
+            <select id="zoom-select" aria-label="Zoom">
+              <option value="fit">Fit to page</option>
+              <option value="width">Fit to width</option>
+              <option value="manual">Custom zoom</option>
+            </select>
+          </div>
+        </div>
+      </section>
+      <aside class="filters-pane" id="filters-pane"></aside>
+      <aside class="side-pane" id="side-pane"></aside>
+    </div>
+  </div>
+</div>
+<script src="data.js"></script>
+<script src="model.js"></script>
+<script src="analytics.js"></script>
+<script src="icons.js"></script>
+<script src="app.js"></script>
+<script src="chrome.js"></script>
+<script src="menus.js"></script>
+<script src="visuals-overview.js"></script>
+<script src="visuals-quality.js"></script>
+<script src="visuals-customer.js"></script>
+<script src="visuals-batch.js"></script>
+<script src="bookmarks.js"></script>
+<script src="shell.js"></script>
+</body>
+</html>
