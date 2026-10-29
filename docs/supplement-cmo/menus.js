@@ -379,7 +379,7 @@ function insightsHtml(list, tab) {
     (shown.length
       ? shown
           .map(
-            (ins, i) =>
+            ins =>
               '<div class="ins-card"><div class="ins-type ins-' +
               ins.type.replace(/\s/g, '') +
               '">' +

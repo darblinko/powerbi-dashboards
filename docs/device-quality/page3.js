@@ -310,7 +310,7 @@
   };
 
   const visuals = PBI.slicers
-    .band('p3', 'CAPA Effectiveness', 'Corrective and preventive action status and aging')
+    .band('p3', 'CAPA Effectiveness')
     .concat([
       capaCard('c3Open', 'Open CAPAs', 'openCapas', M.fmt.int, { x: 8, y: 68, w: 202, h: 108 }, 25, 'low'),
       capaCard('c3Days', 'Avg Days Open', 'avgDaysOpen', M.fmt.dec1, { x: 218, y: 68, w: 202, h: 108 }, 60, 'low'),

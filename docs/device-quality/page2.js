@@ -532,7 +532,7 @@
   };
 
   const visuals = PBI.slicers
-    .band('p2', 'Complaint Trending', 'Complaint rate, reportability and MDR timeliness')
+    .band('p2', 'Complaint Trending')
     .concat([
       card(
         'c2Count',

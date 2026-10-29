@@ -263,7 +263,7 @@
   }
 
   // The standard header band shared by pages 1 to 3.
-  function band(prefix, title, subtitle) {
+  function band(prefix, title) {
     return [
       textBox(
         prefix + 'Title',

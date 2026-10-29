@@ -23,8 +23,8 @@
     fields: ['Plant', 'OEE']
   });
 
-  const rowsCompute = api => {
-    const counts = PBI.visibleCounts(api.page.id);
+  const rowsCompute = () => {
+    const counts = PBI.visibleCounts();
     return counts.reduce((s, c) => s + c.visible, 0);
   };
 
@@ -276,7 +276,7 @@
         kpi('p4-k-p', 326, 60, 310, 76, 'Plants visible', null, {
           spark: false,
           dax: ['Plants visible'],
-          compute: api => ({
+          compute: () => ({
             value: M.fieldValues('Plant', window.PBI_STATE.rolePlant()).length,
             fmt: 'int',
             sub: '<span>of 4 plants in the model</span>'
@@ -290,8 +290,8 @@
         kpi('p4-k-s', 962, 60, 310, 76, 'Share of model rows', null, {
           spark: false,
           dax: ['Visible rows'],
-          compute: api => {
-            const c = PBI.visibleCounts(api.page.id);
+          compute: () => {
+            const c = PBI.visibleCounts();
             return {
               value: c.reduce((s, x) => s + x.visible, 0) / c.reduce((s, x) => s + x.total, 0),
               fmt: 'pct',

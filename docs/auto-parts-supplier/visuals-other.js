@@ -173,13 +173,13 @@
 
   /* ---------- RLS: rows visible by table ---------- */
   const FACTS = ['Production', 'Downtime', 'Cost', 'Receipts', 'Shipments', 'EightD', 'Maintenance'];
-  function visibleCounts(pageId) {
+  function visibleCounts() {
     const plant = ST.rolePlant();
     const f = plant ? [{ field: 'Plant', values: new Set([plant]) }] : [];
     return FACTS.map(t => ({ table: t, total: D.tables[t].length, visible: M.filterRows(t, f).length }));
   }
   PBI.kinds.rowsByTable = function (api) {
-    const counts = visibleCounts(api.page.id);
+    const counts = visibleCounts();
     const chart = api.chart();
     chart.setOption(
       cc.base({

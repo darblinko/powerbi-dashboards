@@ -53,7 +53,7 @@
       ['comment', 'Comments'],
       ['star', '']
     ];
-    const b = (it, i) =>
+    const b = it =>
       '<button class="ab-btn" data-ab="' +
       it[1] +
       '">' +

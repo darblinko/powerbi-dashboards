@@ -144,18 +144,16 @@
     chart.setOption(
       cc.base({
         legend: cc.legend('Supplier tier', TIERS),
-        graphic: cc
-          .legendTitle('Supplier tier')
-          .concat([
-            {
-              type: 'text',
-              right: 26,
-              top: 40,
-              z: -1,
-              silent: true,
-              style: { text: D.months[mi].label, fill: '#E1DFDD', font: '600 40px ' + cc.FONT, align: 'right' }
-            }
-          ]),
+        graphic: cc.legendTitle('Supplier tier').concat([
+          {
+            type: 'text',
+            right: 26,
+            top: 40,
+            z: -1,
+            silent: true,
+            style: { text: D.months[mi].label, fill: '#E1DFDD', font: '600 40px ' + cc.FONT, align: 'right' }
+          }
+        ]),
         grid: { left: 62, right: 22, top: 32, bottom: 40 },
         tooltip: cc.tooltip({
           trigger: 'item',

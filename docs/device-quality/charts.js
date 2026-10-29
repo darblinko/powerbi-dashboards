@@ -81,7 +81,12 @@
         type: 'value',
         axisLine: { show: false },
         axisTick: { show: false },
-        axisLabel: { color: GREY, fontSize: 11, fontFamily: FONT, formatter: o.formatter || (v => PBI.model.fmt.k(v)) },
+        axisLabel: {
+          color: GREY,
+          fontSize: 11,
+          fontFamily: FONT,
+          formatter: o.formatter || (v => window.PBI.model.fmt.k(v))
+        },
         splitLine: { show: o.grid !== false, lineStyle: { color: '#E1DFDD', type: 'dashed', width: 1 } },
         name: o.title || '',
         nameLocation: 'middle',
@@ -117,7 +122,7 @@
           color: GREY,
           fontSize: 11,
           fontFamily: FONT,
-          formatter: p => (o.labelFmt || PBI.model.fmt.k)(p.value)
+          formatter: p => (o.labelFmt || window.PBI.model.fmt.k)(p.value)
         }
       : { show: false };
     const common = {

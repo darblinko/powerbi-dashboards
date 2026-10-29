@@ -94,13 +94,11 @@
         const btn = body.querySelector('.dropdown-box');
         btn.addEventListener('click', e => {
           e.stopPropagation();
-          const opts = ['All']
-            .concat(D.DEVICES)
-            .map(d => ({
-              label: d === 'All' ? 'Select all' : d,
-              checked: S().slicerDevice === d,
-              action: () => M.setState({ slicerDevice: d, selection: null })
-            }));
+          const opts = ['All'].concat(D.DEVICES).map(d => ({
+            label: d === 'All' ? 'Select all' : d,
+            checked: S().slicerDevice === d,
+            action: () => M.setState({ slicerDevice: d, selection: null })
+          }));
           F.openMenu(btn, opts, { alignLeft: true, cls: 'dropdown-list' });
         });
       }

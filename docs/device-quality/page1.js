@@ -519,7 +519,7 @@
   };
 
   const visuals = PBI.slicers
-    .band('p1', 'Quality Overview', 'Complaints, MDR, CAPA and manufacturing quality')
+    .band('p1', 'Quality Overview')
     .concat(KPIS.map((k, i) => kpi(k, { x: 8 + i * 212, y: 68, w: 204, h: 108 })))
     .concat([columnVisual, donutVisual, matrixVisual]);
 

@@ -124,7 +124,7 @@
     );
   }
 
-  function wireCard(el, c, list, allowTopN) {
+  function wireCard(el, c) {
     const changed = () => {
       ST.S.selection[PBI.app.pageId()] = null;
       PBI.app.refresh();
@@ -215,7 +215,7 @@
       const holder = document.createElement('div');
       holder.innerHTML = cardHtml(c, allowTopN);
       const el = holder.firstChild;
-      wireCard(el, c, cards, allowTopN);
+      wireCard(el, c);
       wrap.appendChild(el);
     });
     return wrap;

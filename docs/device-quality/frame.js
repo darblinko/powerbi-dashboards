@@ -550,7 +550,7 @@
     charts.forEach(c => {
       try {
         c.dispose();
-      } catch (e) {
+      } catch {
         /* already disposed */
       }
     });
