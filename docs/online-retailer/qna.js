@@ -251,13 +251,13 @@
     }
     const spec = dimSpec(p.dim);
     const g = M.groupBy(list, spec.key);
-    let keys = Array.from(g.keys());
-    if (spec.time) keys.sort((a, b) => a - b);
-    else keys.sort((a, b) => meas.f(g.get(b)) - meas.f(g.get(a)));
+    let keys = Array.from(g.keys()).sort((a, b) => meas.f(g.get(b)) - meas.f(g.get(a)));
     if (p.top) {
       if (p.top.dir === 'bottom') keys.reverse();
       keys = keys.slice(0, p.top.n);
     }
+    // Time answers are ranked by value for Top N, then drawn in chronological order.
+    if (spec.time) keys.sort((a, b) => a - b);
     const names = keys.map(spec.name),
       vals = keys.map(k => meas.f(g.get(k)));
     def.last = { columns: [spec.label, meas.label], numeric: [false, true], rows: names.map((n, i) => [n, vals[i]]) };
