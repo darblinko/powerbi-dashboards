@@ -254,16 +254,19 @@
       refreshVisual(visualId);
       return;
     }
-    if (play.month >= 11) play.month = 0;
+    const allowed = M.playMonths(ST.filterContext(pageId(), visualId));
+    if (!allowed.length) return;
+    const last = allowed[allowed.length - 1];
+    if (play.month >= last) play.month = allowed[0];
     play.playing = true;
     refreshVisual(visualId);
     playTimer = setInterval(() => {
-      if (play.month >= 11) {
+      if (play.month >= last) {
         stopPlay();
         refreshVisual(visualId);
         return;
       }
-      play.month += 1;
+      play.month = M.clampPlayMonth(play.month + 1, allowed);
       refreshVisual(visualId);
     }, 900);
   }

@@ -46,7 +46,7 @@
       });
       const input = api.el.querySelector('input');
       input.addEventListener('input', () => {
-        api.S.play.month = +input.value;
+        api.S.play.month = M.clampPlayMonth(+input.value, M.playMonths(api.filters()));
         PBI.app.refreshVisual(v.id);
       });
       input.addEventListener('click', ev => ev.stopPropagation());
@@ -70,10 +70,16 @@
     const sel = S.selection[api.page.id];
     const supSel = sel && sel.field === 'Supplier' ? sel.values : null;
     const rows = api.q('Receipts', { exclude: ['Month', 'Quarter'], sel: !supSel });
+    const allowed = M.playMonths(api.filters());
+    const inScope = i => allowed.indexOf(i) >= 0;
     const data = seriesByMonth(rows);
     const chart = ensureHolder(api, v);
+    S.play.month = M.clampPlayMonth(S.play.month, allowed);
     const mi = S.play.month;
-    api.el.querySelector('input').value = mi;
+    const input = api.el.querySelector('input');
+    input.min = allowed.length ? allowed[0] : 0;
+    input.max = allowed.length ? allowed[allowed.length - 1] : 11;
+    input.value = mi;
     api.el.querySelector('.play-label').textContent = D.months[mi].label;
     api.el.querySelector('.play-btn').innerHTML = window.PBI_ICON(S.play.playing ? 'pause' : 'play', 11);
     let maxPpm = 0,
@@ -98,7 +104,7 @@
       name: tier,
       color: TIER_COLOR[tier],
       data: [...data.entries()]
-        .filter(([sup, arr]) => supplierTier[sup] === tier && arr[mi])
+        .filter(([sup, arr]) => supplierTier[sup] === tier && inScope(mi) && arr[mi])
         .map(([sup, arr]) => {
           const p = arr[mi];
           tableRows.push([sup, tier, D.months[mi].label, p.otd, p.ppm, p.spend]);
@@ -125,7 +131,7 @@
       if (!arr) return;
       const pts = [];
       for (let i = 0; i <= mi; i++)
-        if (arr[i]) pts.push({ value: [arr[i].otd, arr[i].ppm], name: D.months[i].short, mi: i });
+        if (arr[i] && inScope(i)) pts.push({ value: [arr[i].otd, arr[i].ppm], name: D.months[i].short, mi: i });
       series.push({
         id: 'trace-' + sup,
         type: 'line',

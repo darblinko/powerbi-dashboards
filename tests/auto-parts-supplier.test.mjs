@@ -54,3 +54,22 @@ test('Get insights supplier PPM is computed from the role plant receipts only', 
   })()`);
   assert.equal(check.reported, check.recomputed);
 });
+
+test('the supplier scatter play axis stays inside the Quarter filter', () => {
+  const evaluate = load();
+  const result = evaluate(`(() => {
+    const M = window.PBI_MODEL;
+    const q1 = [{ field: 'Quarter', values: new Set(['Q1 2026']) }];
+    const allowed = M.playMonths(q1);
+    return {
+      allowed: allowed.map(i => window.PBI_DATA.months[i].label),
+      unfiltered: M.playMonths([]).length,
+      fromSeptember: window.PBI_DATA.months[M.clampPlayMonth(11, allowed)].label,
+      inside: M.clampPlayMonth(allowed[1], allowed) === allowed[1]
+    };
+  })()`);
+  assert.deepEqual([...result.allowed], ['Jan 2026', 'Feb 2026', 'Mar 2026']);
+  assert.equal(result.unfiltered, 12);
+  assert.equal(result.fromSeptember, 'Mar 2026');
+  assert.equal(result.inside, true);
+});

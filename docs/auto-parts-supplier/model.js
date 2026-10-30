@@ -219,6 +219,17 @@
     'Plants visible': "Plants visible =\nDISTINCTCOUNT ( 'Plant'[PlantName] )"
   };
 
+  /* Months a play axis may show: the months every Month and Quarter filter in the context allows. */
+  function playMonths(filters) {
+    const time = filters.filter(f => f.field === 'Month' || f.field === 'Quarter');
+    return D.months.filter(m => time.every(f => f.values.has(f.field === 'Month' ? m.idx : m.quarter))).map(m => m.idx);
+  }
+  function clampPlayMonth(month, allowed) {
+    if (!allowed.length || allowed.indexOf(month) >= 0) return month;
+    const later = allowed.find(i => i > month);
+    return later === undefined ? allowed[allowed.length - 1] : later;
+  }
+
   /* Get insights: the largest machine-month downtime, supplier-month PPM and cost line overrun.
      Every table passes through the row-level security plant filter first. */
   function insightFindings(rolePlant) {
@@ -297,6 +308,8 @@
     filterRows,
     groupBy,
     insightFindings,
+    playMonths,
+    clampPlayMonth,
     fmt,
     compact
   });
