@@ -54,3 +54,29 @@ test('the narrative counts releases by release date', () => {
     result.narrative.join('\n')
   );
 });
+
+test('the release cycle time DAX filters on the same released dispositions as the measure', () => {
+  const evaluate = loadModel();
+  const result = JSON.parse(
+    evaluate(`(() => {
+      const released = D.batches.filter(isReleased);
+      const mean = rows => rows.reduce((a, b) => a + b.releaseDays, 0) / rows.length;
+      return JSON.stringify({
+        total: D.batches.length,
+        released: released.length,
+        withReleaseDay: D.batches.filter(b => b.releaseDay !== undefined && b.releaseDay !== null).length,
+        measure: MEASURES.cycle.f({ batches: D.batches }),
+        releasedMean: mean(released),
+        allMean: mean(D.batches),
+        dax: MEASURES.cycle.dax
+      });
+    })()`)
+  );
+  assert.equal(result.total, 3214);
+  assert.equal(result.withReleaseDay, 3214);
+  assert.equal(result.released, 3144);
+  assert.equal(result.measure, result.releasedMean);
+  assert.notEqual(result.measure, result.allMean);
+  assert.match(result.dax, /Batches\[Disposition\] IN \{ "Released", "Released with deviation" \}/);
+  assert.doesNotMatch(result.dax, /NOT ISBLANK \( Batches\[Release Date\] \)/);
+});

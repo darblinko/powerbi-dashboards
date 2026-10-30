@@ -296,7 +296,7 @@ const MEASURES = {
     fmt: 'dec1',
     target: 7,
     lowerIsBetter: true,
-    dax: 'Release cycle time days =\nAVERAGEX (\n    FILTER ( Batches, NOT ISBLANK ( Batches[Release Date] ) ),\n    DATEDIFF ( Batches[Manufacture End Date], Batches[Release Date], DAY )\n)',
+    dax: 'Release cycle time days =\nAVERAGEX (\n    FILTER ( Batches, Batches[Disposition] IN { "Released", "Released with deviation" } ),\n    DATEDIFF ( Batches[Manufacture End Date], Batches[Release Date], DAY )\n)',
     f: c => {
       const rel = c.batches.filter(isReleased);
       return div(
