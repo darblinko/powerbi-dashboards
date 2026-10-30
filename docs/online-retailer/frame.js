@@ -272,6 +272,10 @@
     setTimeout(() => t.remove(), 3200);
   }
 
+  function titleText(def) {
+    return typeof def.title === 'function' ? def.title() : def.title || '';
+  }
+
   function escapeHtml(s) {
     return String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
   }
@@ -287,7 +291,7 @@
   function showDax(def) {
     const blocks = (def.dax || []).map(d => '<pre class="dax">' + daxHighlight(d) + '</pre>').join('');
     dialog(
-      'View DAX: ' + escapeHtml(def.title),
+      'View DAX: ' + escapeHtml(titleText(def)),
       '<p class="dlg-note">Measures used by this visual, as defined in the semantic model.</p>' + blocks
     );
   }
@@ -322,7 +326,7 @@
     });
     const sel = s.selection;
     if (sel && sel.vid !== def.id && sel.page === s.page && !def.ignoresSelection) {
-      const src = registry[sel.vid] ? registry[sel.vid].title : 'another visual';
+      const src = registry[sel.vid] ? titleText(registry[sel.vid]) : 'another visual';
       lines.push(
         M.FIELDS[sel.field].label +
           ' is ' +
@@ -349,7 +353,7 @@
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = def.title.replace(/[^A-Za-z0-9]+/g, '_') + '_data.csv';
+    a.download = titleText(def).replace(/[^A-Za-z0-9]+/g, '_') + '_data.csv';
     document.body.appendChild(a);
     a.click();
     setTimeout(() => {
@@ -511,7 +515,7 @@
     if (def.title && !def.hideTitle) {
       const t = document.createElement('div');
       t.className = 'vtitle';
-      t.textContent = typeof def.title === 'function' ? def.title() : def.title;
+      t.textContent = titleText(def);
       el.appendChild(t);
     }
     const body = document.createElement('div');
@@ -532,7 +536,7 @@
     if (old) old.remove();
     buildHeader(def, el);
     const t = el.querySelector('.vtitle');
-    if (t && typeof def.title === 'function') t.textContent = def.title();
+    if (t && typeof def.title === 'function') t.textContent = titleText(def);
   }
 
   window.FRAME = {
