@@ -151,8 +151,12 @@ function rftSentence(c) {
 
 function releasedSentence(c) {
   const [, prev, last] = lastMonths(3);
-  const n2 = c.batches.filter(x => x.month === last.key && isReleased(x)).length;
-  const n1 = c.batches.filter(x => x.month === prev.key && isReleased(x)).length;
+  const releaseMonth = x => {
+    const p = U.partsOf(x.releaseDay);
+    return p.y + '-' + String(p.m).padStart(2, '0');
+  };
+  const n2 = c.batches.filter(x => isReleased(x) && releaseMonth(x) === last.key).length;
+  const n1 = c.batches.filter(x => isReleased(x) && releaseMonth(x) === prev.key).length;
   if (!n1) return null;
   const ch = (n2 - n1) / n1;
   const word = ch >= 0 ? 'more' : 'fewer';

@@ -29,3 +29,28 @@ test('a batch selection limits OOS records to the selected batches', () => {
   assert.equal(result.foreignOos, 0);
   assert.ok(result.maxRate <= 1, `weekly OOS rate ${result.maxRate} exceeds 100%`);
 });
+
+test('the narrative counts releases by release date', () => {
+  const evaluate = loadModel();
+  const result = JSON.parse(
+    evaluate(`(() => {
+      initFilters(VIS);
+      const releasedIn = (y, m) =>
+        D.batches.filter(b => {
+          const p = U.partsOf(b.releaseDay);
+          return isReleased(b) && p.y === y && p.m === m;
+        }).length;
+      return JSON.stringify({
+        august: releasedIn(2026, 8),
+        september: releasedIn(2026, 9),
+        narrative: smartNarrative(ctx('narrative'))
+      });
+    })()`)
+  );
+  assert.equal(result.august, 156);
+  assert.equal(result.september, 151);
+  assert.ok(
+    result.narrative.includes('<b>151</b> batches were released in September, <b>3.2%</b> fewer than in August.'),
+    result.narrative.join('\n')
+  );
+});
