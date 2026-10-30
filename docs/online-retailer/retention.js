@@ -422,16 +422,29 @@
       x.label +
       '</b></div>' +
       '<div class="ki-chart"></div><div class="ki-note">' +
+      influencerNote(x, target) +
+      '</div></div>';
+    return '<div class="ki-body">' + left + right + '</div>';
+  }
+
+  /* rIn and rOut are shares of the selected target, so the wording follows the target. */
+  function influencerNote(x, target) {
+    const outcome = target === 'Yes' ? 'churned' : 'did not churn';
+    return (
       (x.rIn * 100).toFixed(1) +
       '% of customers where ' +
       x.label.charAt(0).toLowerCase() +
       x.label.slice(1) +
-      ' churned (' +
+      ' ' +
+      outcome +
+      ' (' +
       x.n.toLocaleString('en-US') +
-      ' customers). The rest average ' +
+      ' customers). Among the other customers, ' +
       (x.rOut * 100).toFixed(1) +
-      '%.</div></div>';
-    return '<div class="ki-body">' + left + right + '</div>';
+      '% ' +
+      outcome +
+      '.'
+    );
   }
 
   function drawInfluencerChart(vid, el, x, pop, target) {

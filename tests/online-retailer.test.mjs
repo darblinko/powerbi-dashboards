@@ -104,3 +104,31 @@ test('Q&A month without Top N still lists all 12 months in order', () => {
   assert.deepEqual(rows[0], ['Oct 2025', 14408485]);
   assert.deepEqual(rows[11], ['Sep 2026', 15125834]);
 });
+
+// Renders key influencers for a churn target under the default state and returns the explanation.
+function influencerNote(target) {
+  const { evaluate } = load();
+  return evaluate(`(() => {
+    MODEL.setState({ kiTarget: '${target}', kiTab: 'influencers' });
+    const def = RETENTION.keyInfluencers('ki-test');
+    const body = document.createElement('div');
+    def.render(body, def);
+    return body.innerHTML.match(/class="ki-note">(.*?)<\\/div>/)[1];
+  })()`);
+}
+
+test('key influencers note for churn Yes describes customers who churned', () => {
+  assert.equal(
+    influencerNote('Yes'),
+    '62.6% of customers where delivery days is more than 5 churned (449 customers). ' +
+      'Among the other customers, 37.8% churned.'
+  );
+});
+
+test('key influencers note for churn No describes customers who did not churn', () => {
+  assert.equal(
+    influencerNote('No'),
+    '73.4% of customers where first order category is Beauty did not churn (192 customers). ' +
+      'Among the other customers, 53.7% did not churn.'
+  );
+});
