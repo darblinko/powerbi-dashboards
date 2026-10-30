@@ -236,7 +236,7 @@
   }
   function drillthrough(machine) {
     const S = ST.S;
-    S.drillthrough = { machine, from: S.page };
+    ST.startDrillthrough(machine);
     S.selection.machine = null;
     goPage('machine');
   }

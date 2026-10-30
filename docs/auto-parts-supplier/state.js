@@ -116,6 +116,7 @@
         out.push({ field, values: new Set(sl[field]), source: 'slicer', label: 'Slicer' });
     });
     if (pageId === 'machine' && S.drillthrough) {
+      (S.drillthrough.filters || []).forEach(f => out.push(Object.assign({}, f, { values: new Set(f.values) })));
       out.push({
         field: 'Machine',
         values: new Set([S.drillthrough.machine]),
@@ -148,6 +149,23 @@
         if (f) filtered.push(Object.assign(f, { label: 'Filters on this visual' }));
       });
     return filtered;
+  }
+
+  /* Keep all filters: the source page filters, slicers and cross-filter selection carry over to
+     the drillthrough page. Report-level filters and security apply there anyway; the
+     drillthrough field itself is replaced by the drilled value. */
+  function startDrillthrough(machine) {
+    const from = S.page;
+    const filters = filterContext(from, null)
+      .filter(f => ['card', 'slicer', 'selection'].indexOf(f.source) >= 0 && f.label !== 'Filters on all pages')
+      .filter(f => f.field !== 'Machine')
+      .map(f => ({
+        field: f.field,
+        values: new Set(f.values),
+        source: 'drillthrough',
+        label: 'Kept from source page'
+      }));
+    S.drillthrough = { machine, from, filters };
   }
 
   function select(pageId, visualId, title, field, value, multi) {
@@ -192,6 +210,7 @@
     card,
     rolePlant,
     filterContext,
+    startDrillthrough,
     select
   };
 })();
