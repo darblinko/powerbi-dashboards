@@ -221,8 +221,22 @@
       model.asOf = prev;
     }
   }
+  const DATE_FIELDS = Object.keys(FIELDS).filter(k => FIELDS[k].table === 'Date');
+  // Stock measures mirror MAX ( 'Date'[Date] ) with REMOVEFILTERS ( 'Date' ): date filters only
+  // move the as-of day to the end of the last month they keep, so CAPAs opened earlier still count.
+  function stockContext(ctx) {
+    const asOf = ctx.asOf != null ? ctx.asOf : model.asOf;
+    const dateTests = ctx.filter(c => DATE_FIELDS.includes(c.field));
+    let end = -1;
+    for (let i = 0; i < MI.length && MI[i].first <= asOf; i++)
+      if (dateTests.every(c => c.test(FIELDS[c.field].get({ month: i })))) end = i;
+    const out = ctx.filter(c => !DATE_FIELDS.includes(c.field));
+    out.asOf = end < 0 ? -Infinity : Math.min(asOf, MI[end].last);
+    return out;
+  }
   function openCapaRows(ctx) {
-    return withAsOf(ctx, () => rows('capa', ctx).filter(r => r.day <= model.asOf && capaStatus(r) === 'Open'));
+    const s = stockContext(ctx);
+    return withAsOf(s, () => rows('capa', s).filter(r => r.day <= model.asOf && capaStatus(r) === 'Open'));
   }
 
   const MEASURES = {
@@ -286,7 +300,7 @@
     openCapas: {
       name: 'Open CAPAs',
       kind: 'stock',
-      dax: "Open CAPAs =\nVAR AsOf = MAX ( 'Date'[Date] )\nRETURN\n    CALCULATE (\n        COUNTROWS ( CAPA ),\n        CAPA[Open Date] <= AsOf,\n        OR ( ISBLANK ( CAPA[Closed Date] ), CAPA[Closed Date] > AsOf )\n    )",
+      dax: "Open CAPAs =\nVAR AsOf = MAX ( 'Date'[Date] )\nRETURN\n    CALCULATE (\n        COUNTROWS ( CAPA ),\n        REMOVEFILTERS ( 'Date' ),\n        CAPA[Open Date] <= AsOf,\n        OR ( ISBLANK ( CAPA[Closed Date] ), CAPA[Closed Date] > AsOf )\n    )",
       calc: ctx => openCapaRows(ctx).length
     },
     capaOverdue: {
@@ -295,17 +309,17 @@
       dax: "CAPA Overdue % =\nVAR AsOf = MAX ( 'Date'[Date] )\nVAR OverdueCount =\n    CALCULATE ( [Open CAPAs], CAPA[Due Date] < AsOf )\nRETURN\n    DIVIDE ( OverdueCount, [Open CAPAs] )",
       calc: ctx => {
         const o = openCapaRows(ctx);
-        const asOf = ctx.asOf != null ? ctx.asOf : model.asOf;
+        const asOf = stockContext(ctx).asOf;
         return o.length ? o.filter(r => r.dueDay < asOf).length / o.length : null;
       }
     },
     avgDaysOpen: {
       name: 'Avg Days Open',
       kind: 'stock',
-      dax: "Avg Days Open =\nVAR AsOf = MAX ( 'Date'[Date] )\nRETURN\n    AVERAGEX (\n        FILTER ( CAPA, ISBLANK ( CAPA[Closed Date] ) || CAPA[Closed Date] > AsOf ),\n        DATEDIFF ( CAPA[Open Date], AsOf, DAY )\n    )",
+      dax: "Avg Days Open =\nVAR AsOf = MAX ( 'Date'[Date] )\nRETURN\n    AVERAGEX (\n        FILTER (\n            CALCULATETABLE ( CAPA, REMOVEFILTERS ( 'Date' ) ),\n            CAPA[Open Date] <= AsOf\n                && ( ISBLANK ( CAPA[Closed Date] ) || CAPA[Closed Date] > AsOf )\n        ),\n        DATEDIFF ( CAPA[Open Date], AsOf, DAY )\n    )",
       calc: ctx => {
         const o = openCapaRows(ctx);
-        return o.length ? withAsOf(ctx, () => sum(o, daysOpen) / o.length) : null;
+        return o.length ? withAsOf(stockContext(ctx), () => sum(o, daysOpen) / o.length) : null;
       }
     },
     effectivePct: {
@@ -377,6 +391,7 @@
     mdrClockDays,
     decisionBin,
     monthlySeries,
+    openCapaRows,
     fmt,
     productByName
   });

@@ -41,7 +41,7 @@
   }
 
   function openRows(ctx) {
-    return M.rows('capa', ctx).filter(r => r.day <= M.asOf && M.capaStatus(r) === 'Open');
+    return M.openCapaRows(ctx);
   }
 
   const agingVisual = {
