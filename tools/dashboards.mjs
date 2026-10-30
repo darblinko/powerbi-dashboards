@@ -61,3 +61,16 @@ export function loadDashboardData(dashboard) {
 export function factRowCounts(dashboard, data) {
   return Object.fromEntries(Object.entries(dashboard.facts(data)).map(([name, rows]) => [name, rows.length]));
 }
+
+// Runs a dashboard's classic scripts, in page order, in one node:vm context whose global object
+// doubles as `window`. Returns a function that evaluates an expression in that context, so tests
+// can reach top-level declarations such as `const M` as well as `window.MODEL`.
+export function loadDashboardScripts(dir, files, globals = {}) {
+  const context = { console, ...globals };
+  context.window = context;
+  vm.createContext(context);
+  for (const file of files) {
+    vm.runInContext(readFileSync(`${DOCS}${dir}/${file}`, 'utf8'), context, { filename: `${dir}/${file}` });
+  }
+  return source => vm.runInContext(source, context);
+}
