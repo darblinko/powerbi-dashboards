@@ -581,6 +581,11 @@
       binVisual,
       tableVisual
     ]);
-  PBI.pages.trending = { name: 'Complaint Trending', visuals, filterFields: ['failureMode', 'complaintStatus'] };
+  PBI.pages.trending = {
+    name: 'Complaint Trending',
+    visuals,
+    filterFields: ['failureMode', 'complaintStatus'],
+    controlData
+  };
   PBI.clockIcon = clockIcon;
 })();

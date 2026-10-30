@@ -171,6 +171,46 @@
     toastTimer = setTimeout(() => t.classList.remove('on'), 2600);
   }
 
+  // Get insights: control chart signals from Complaint Trending and the CAPA smart narrative.
+  function insightItems(ctx) {
+    const MI = window.PBIDATA.MONTHS;
+    const d = PBI.pages.trending.controlData(ctx);
+    const limits = d.lcl.toFixed(1) + ' to ' + d.ucl.toFixed(1);
+    const items = [];
+    d.months.forEach((m, i) => {
+      const r = d.rates[i];
+      if (r > d.ucl || r < d.lcl)
+        items.push([
+          'Anomaly',
+          'Complaint rate in ' +
+            esc(MI[m].label) +
+            ' was ' +
+            r.toFixed(1) +
+            ' per 1K, ' +
+            (r > d.ucl ? 'above' : 'below') +
+            ' the control limits of ' +
+            limits +
+            ' (mean ' +
+            d.mean.toFixed(1) +
+            ').'
+        ]);
+    });
+    if (!items.length && d.months.length)
+      items.push(['Trend', 'Complaint rate stayed within the control limits of ' + limits + ' in every month.']);
+    PBI.pages.capa.narrative(ctx).forEach(s => items.push(['CAPA', s]));
+    return items;
+  }
+  function showInsights() {
+    const items = insightItems(PBI.app.ctxFor('__insights', { withSelection: false }));
+    PBI.frame.modal(
+      'Get insights',
+      '<div class="sn">' +
+        items.map(i => '<p class="ins-row"><span class="ins-tag">' + i[0] + '</span>' + i[1] + '</p>').join('') +
+        '</div>',
+      'Computed from the Complaints, Shipments and CAPA tables with the slicers and report filters applied.'
+    );
+  }
+
   function onAction(name, btnEl) {
     const S = PBI.S;
     const r = btnEl.getBoundingClientRect();
@@ -223,6 +263,9 @@
           }
         ]);
         break;
+      case 'Get insights':
+        showInsights();
+        break;
       case 'Bookmarks':
         at(PBI.bookmarks.menuItems());
         break;
@@ -259,5 +302,5 @@
     window.addEventListener('resize', fit);
   }
 
-  PBI.shell = { init, renderPagesPane, fit, toast, PAGE_W, PAGE_H };
+  PBI.shell = { init, renderPagesPane, fit, toast, insightItems, PAGE_W, PAGE_H };
 })();

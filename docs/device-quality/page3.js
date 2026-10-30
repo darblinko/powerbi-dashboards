@@ -329,5 +329,5 @@
       agingVisual,
       scatterVisual
     ]);
-  PBI.pages.capa = { name: 'CAPA Effectiveness', visuals, filterFields: ['source', 'effectiveness'] };
+  PBI.pages.capa = { name: 'CAPA Effectiveness', visuals, filterFields: ['source', 'effectiveness'], narrative };
 })();

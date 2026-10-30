@@ -312,6 +312,7 @@ input, select { font-family: inherit; font-size: 12px; color: var(--fg); }
 .dx-c { color: #6B007B; }
 .dx-s { color: #A4262C; }
 .modal-note { color: var(--fg2); font-size: 11px; margin-top: 10px; }
+.ins-tag { display: inline-block; min-width: 58px; margin-right: 8px; padding: 0 6px; font-size: 11px; font-weight: 600; color: var(--fg2); background: #F3F2F1; border-radius: 2px; text-align: center; }
 #toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%) translateY(20px); background: #252423; color: #fff; padding: 10px 16px; border-radius: 2px; font-size: 13px; opacity: 0; transition: all .2s; z-index: 4000; pointer-events: none; }
 #toast.on { opacity: 1; transform: translateX(-50%) translateY(0); }
 @media print { #topbar, #rail, #actionbar, #pagespane, #filterspane { display: none; } }

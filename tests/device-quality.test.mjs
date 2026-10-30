@@ -45,3 +45,37 @@ test('Open CAPAs under a month cross-filter is the stock as of that month end', 
   const spark = evaluate(`PBI.model.monthlySeries('openCapas', ${sliceSource(0, 32)}, 14, 14)`);
   assert.equal(card, spark[0]);
 });
+
+const REPORT_SCRIPTS = [
+  'data.js',
+  'model.js',
+  'icons.js',
+  'charts.js',
+  'frame.js',
+  'slicers.js',
+  'filterspane.js',
+  'shell.js',
+  'page1.js',
+  'page2.js',
+  'decomp.js',
+  'page3.js'
+];
+
+test('Get insights lists control chart signals and the CAPA narrative for the report filters', () => {
+  const evaluate = loadDashboardScripts('device-quality', REPORT_SCRIPTS, {
+    document: { addEventListener() {} }
+  });
+  evaluate(`PBI.S = { slicers: { from: 0, to: 32 } }; PBI.model.asOf = PBIDATA.MONTHS[32].last;`);
+  const items = evaluate(`PBI.shell.insightItems(${sliceSource(0, 32)})`);
+  const narrative = evaluate(`PBI.pages.capa.narrative(${sliceSource(0, 32)})`);
+  const signals = evaluate(`(() => {
+    const d = PBI.pages.trending.controlData(${sliceSource(0, 32)});
+    return d.rates.filter(r => r > d.ucl || r < d.lcl).length;
+  })()`);
+  assert.ok(items.length >= narrative.length + 1);
+  assert.deepEqual(
+    items.filter(i => i[0] === 'CAPA').map(i => i[1]),
+    narrative
+  );
+  assert.equal(items.filter(i => i[0] === 'Anomaly').length, signals);
+});

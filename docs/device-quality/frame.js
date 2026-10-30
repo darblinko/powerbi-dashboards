@@ -102,20 +102,29 @@
       .replace(/(\[[^\]]+\])/g, '<span class="dx-c">$1</span>');
   }
   function showDax(v) {
-    closeModal();
-    const back = el('div', 'modal-back');
     const body = (v.dax || [])
       .map(d => '<div class="dax-name">' + esc(d.name) + '</div><pre class="dax">' + highlightDax(d.expr) + '</pre>')
       .join('');
+    modal(
+      'View DAX: ' + v.title,
+      body,
+      'Measure definitions as authored in the semantic model. Evaluated in the current filter context.'
+    );
+  }
+  function modal(title, bodyHtml, note) {
+    closeModal();
+    const back = el('div', 'modal-back');
     back.innerHTML =
-      '<div class="modal"><div class="modal-h"><span>View DAX: ' +
-      esc(v.title) +
+      '<div class="modal"><div class="modal-h"><span>' +
+      esc(title) +
       '</span><button class="iconbtn mclose" title="Close">' +
       icon('close') +
       '</button></div>' +
       '<div class="modal-b">' +
-      body +
-      '<div class="modal-note">Measure definitions as authored in the semantic model. Evaluated in the current filter context.</div></div></div>';
+      bodyHtml +
+      '<div class="modal-note">' +
+      esc(note) +
+      '</div></div></div>';
     back.addEventListener('mousedown', e => {
       if (e.target === back) closeModal();
     });
@@ -608,6 +617,7 @@
     htmlTable,
     exportCsv,
     showDax,
+    modal,
     buildPage,
     renderAll,
     makeApi,
