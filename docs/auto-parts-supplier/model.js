@@ -219,6 +219,32 @@
     'Plants visible': "Plants visible =\nDISTINCTCOUNT ( 'Plant'[PlantName] )"
   };
 
+  /* Get insights: the largest machine-month downtime, supplier-month PPM and cost line overrun.
+     Every table passes through the row-level security plant filter first. */
+  function insightFindings(rolePlant) {
+    const visible = table => filterRows(table, rolePlant ? [{ field: 'Plant', values: new Set([rolePlant]) }] : []);
+    let downtime = null;
+    groupBy(visible('Downtime'), 'Machine').forEach((rows, machine) =>
+      groupBy(rows, 'Month').forEach((r, month) => {
+        const hours = MS.downtimeHours(r);
+        if (!downtime || hours > downtime.hours) downtime = { machine, month, hours };
+      })
+    );
+    let ppm = null;
+    groupBy(visible('Receipts'), 'Supplier').forEach((rows, supplier) =>
+      groupBy(rows, 'Month').forEach((r, month) => {
+        const value = MS.supplierPpm(r);
+        if (!ppm || value > ppm.value) ppm = { supplier, month, value };
+      })
+    );
+    let cost = null;
+    visible('Cost').forEach(row => {
+      const pct = (row.actual - row.budget) / row.budget;
+      if (row.budget > 50000 && (!cost || pct > cost.pct)) cost = { row, pct };
+    });
+    return { downtime, ppm, cost };
+  }
+
   function compact(v, decimalsSmall) {
     const a = Math.abs(v);
     const s = (x, d) =>
@@ -270,6 +296,7 @@
     fieldValues,
     filterRows,
     groupBy,
+    insightFindings,
     fmt,
     compact
   });

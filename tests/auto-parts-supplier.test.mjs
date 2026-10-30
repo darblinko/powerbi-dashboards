@@ -22,3 +22,35 @@ test('Machine Detail keeps the source page slicers (Keep all filters)', () => {
   })()`);
   assert.deepEqual({ ...rows }, { onSource: 13, onDetail: 13 });
 });
+
+test('Get insights reads only the rows the selected role can see', () => {
+  const evaluate = load();
+  const found = evaluate(`(() => {
+    const D = window.PBI_DATA, M = window.PBI_MODEL;
+    const wroclawSuppliers = new Set(D.tables.Receipts.filter(r => r.plant === 'Wroclaw').map(r => r.supplier));
+    const f = M.insightFindings('Wroclaw');
+    return {
+      downtimeMachinePlant: D.machines.find(m => m.id === f.downtime.machine).plant,
+      supplierSeenAtWroclaw: wroclawSuppliers.has(f.ppm.supplier),
+      costPlant: f.cost.row.plant,
+      allPlantsCost: M.insightFindings(null).cost.row.plant
+    };
+  })()`);
+  assert.equal(found.downtimeMachinePlant, 'Wroclaw');
+  assert.equal(found.supplierSeenAtWroclaw, true);
+  assert.equal(found.costPlant, 'Wroclaw');
+  assert.equal(found.allPlantsCost, 'Michigan');
+});
+
+test('Get insights supplier PPM is computed from the role plant receipts only', () => {
+  const evaluate = load();
+  const check = evaluate(`(() => {
+    const D = window.PBI_DATA, M = window.PBI_MODEL;
+    const f = M.insightFindings('Wroclaw');
+    const rows = D.tables.Receipts.filter(
+      r => r.plant === 'Wroclaw' && r.supplier === f.ppm.supplier && r.month === f.ppm.month
+    );
+    return { reported: f.ppm.value, recomputed: M.MS.supplierPpm(rows) };
+  })()`);
+  assert.equal(check.reported, check.recomputed);
+});

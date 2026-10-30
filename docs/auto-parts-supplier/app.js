@@ -341,53 +341,32 @@
 
   /* ---------- insights ---------- */
   function insights() {
-    const P = D.tables.Downtime;
-    const byMm = M.groupBy(ST.rolePlant() ? P.filter(r => r.plant === ST.rolePlant()) : P, 'machine');
-    let worst = null;
-    byMm.forEach((rows, mach) =>
-      M.groupBy(rows, 'Month').forEach((r, mi) => {
-        const h = M.MS.downtimeHours(r);
-        if (!worst || h > worst.h) worst = { mach, mi, h };
-      })
-    );
-    const rec = M.groupBy(D.tables.Receipts, 'supplier');
-    let ppm = null;
-    rec.forEach((rows, sup) =>
-      M.groupBy(rows, 'Month').forEach((r, mi) => {
-        const v = M.MS.supplierPpm(r);
-        if (!ppm || v > ppm.v) ppm = { sup, mi, v };
-      })
-    );
-    let cost = null;
-    D.tables.Cost.forEach(r => {
-      const pct = (r.actual - r.budget) / r.budget;
-      if (r.budget > 50000 && (!cost || pct > cost.pct)) cost = { r, pct };
-    });
+    const { downtime: worst, ppm, cost } = M.insightFindings(ST.rolePlant());
     PBI.modal(
       '<h2>Insights</h2><p>Largest deviations found in the current model. Computed from the sample data on open.</p><pre>' +
         esc(
           '1. Downtime: ' +
-            worst.mach +
+            worst.machine +
             ' recorded ' +
-            worst.h.toFixed(1) +
+            worst.hours.toFixed(1) +
             ' downtime hours in ' +
-            D.months[worst.mi].label +
+            D.months[worst.month].label +
             ', the highest machine-month in scope.\n' +
             '2. Supplier PPM: ' +
-            ppm.sup +
+            ppm.supplier +
             ' reached ' +
-            Math.round(ppm.v).toLocaleString('en-US') +
+            Math.round(ppm.value).toLocaleString('en-US') +
             ' PPM in ' +
-            D.months[ppm.mi].label +
+            D.months[ppm.month].label +
             '.\n' +
             '3. Cost: ' +
-            cost.r.plant +
+            cost.row.plant +
             ' ' +
-            cost.r.category +
+            cost.row.category +
             ' ran ' +
             (cost.pct * 100).toFixed(0) +
             '% over budget in ' +
-            D.months[cost.r.month].label +
+            D.months[cost.row.month].label +
             '.'
         ) +
         '</pre>'
