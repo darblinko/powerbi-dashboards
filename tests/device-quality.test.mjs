@@ -79,3 +79,24 @@ test('Get insights lists control chart signals and the CAPA narrative for the re
   );
   assert.equal(items.filter(i => i[0] === 'Anomaly').length, signals);
 });
+
+test('date slicer handles step by month from the keyboard within the other handle', () => {
+  const evaluate = loadDashboardScripts('device-quality', REPORT_SCRIPTS.slice(0, 6), {
+    document: { addEventListener() {} }
+  });
+  const step = (from, to, which, key) =>
+    JSON.parse(evaluate(`JSON.stringify(PBI.slicers.stepRange(${from}, ${to}, ${which}, '${key}', 32))`));
+  assert.deepEqual(step(0, 32, 0, 'ArrowRight'), { from: 1, to: 32 });
+  assert.deepEqual(step(0, 32, 0, 'ArrowUp'), { from: 1, to: 32 });
+  assert.deepEqual(step(0, 32, 0, 'ArrowLeft'), { from: 0, to: 32 });
+  assert.deepEqual(step(5, 32, 1, 'ArrowDown'), { from: 5, to: 31 });
+  assert.deepEqual(step(5, 5, 1, 'ArrowLeft'), { from: 5, to: 5 });
+  assert.deepEqual(step(5, 5, 0, 'ArrowRight'), { from: 5, to: 5 });
+  assert.deepEqual(step(5, 20, 0, 'Home'), { from: 0, to: 20 });
+  assert.deepEqual(step(5, 20, 0, 'End'), { from: 20, to: 20 });
+  assert.deepEqual(step(5, 20, 1, 'Home'), { from: 5, to: 5 });
+  assert.deepEqual(step(5, 20, 1, 'End'), { from: 5, to: 32 });
+  assert.deepEqual(step(5, 20, 1, 'PageUp'), { from: 5, to: 32 });
+  assert.deepEqual(step(5, 20, 0, 'PageDown'), { from: 0, to: 20 });
+  assert.equal(step(5, 20, 0, 'Tab'), null);
+});

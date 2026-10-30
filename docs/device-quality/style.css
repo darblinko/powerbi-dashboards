@@ -111,6 +111,7 @@ input, select { font-family: inherit; font-size: 12px; color: var(--fg); }
 .ds-fill { position: absolute; top: 0; height: 4px; background: #252423; }
 .ds-h { position: absolute; top: -5px; width: 14px; height: 14px; margin-left: -7px; border-radius: 50%; background: #fff; border: 2px solid #252423; cursor: grab; touch-action: none; }
 .ds-h:hover { background: #F3F2F1; }
+.ds-h:focus-visible { outline: 2px solid #0F6CBD; outline-offset: 2px; }
 .dd-box { margin-top: 4px; height: 26px; border: 1px solid #C8C6C4; display: flex; align-items: center; justify-content: space-between; padding: 0 8px; font-size: 12px; cursor: pointer; }
 .dd-box span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .dd-box:hover { border-color: var(--fg2); }

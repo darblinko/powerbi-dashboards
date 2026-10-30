@@ -26,6 +26,21 @@
     body.appendChild(h);
   }
 
+  // Keyboard step for a date slicer handle (0 start, 1 end), in months. Returns null for other keys.
+  const KEY_STEPS = { ArrowLeft: -1, ArrowDown: -1, ArrowRight: 1, ArrowUp: 1, PageDown: -12, PageUp: 12 };
+  function stepRange(from, to, which, key, max) {
+    const lo = which === 0 ? 0 : from;
+    const hi = which === 0 ? to : max;
+    const cur = which === 0 ? from : to;
+    let v;
+    if (key in KEY_STEPS) v = cur + KEY_STEPS[key];
+    else if (key === 'Home') v = lo;
+    else if (key === 'End') v = hi;
+    else return null;
+    v = Math.max(lo, Math.min(hi, v));
+    return which === 0 ? { from: v, to } : { from, to: v };
+  }
+
   function dateSlicer(id, rect) {
     return Object.assign(
       {
@@ -60,7 +75,9 @@
             D.fmtDay(D.MONTHS[S.to].last) +
             icon('chevDown', 10) +
             '</div></div>' +
-            '<div class="ds-track"><div class="ds-fill"></div><div class="ds-h ds-h0" title="Start"></div><div class="ds-h ds-h1" title="End"></div></div>';
+            '<div class="ds-track"><div class="ds-fill"></div>' +
+            '<div class="ds-h ds-h0" title="Start" role="slider" tabindex="0" aria-label="Start date"></div>' +
+            '<div class="ds-h ds-h1" title="End" role="slider" tabindex="0" aria-label="End date"></div></div>';
           body.appendChild(wrap);
           const track = wrap.querySelector('.ds-track');
           const fill = wrap.querySelector('.ds-fill');
@@ -77,6 +94,14 @@
             fill.style.width = p1 - p0 + '%';
             wrap.querySelector('.ds-from').firstChild.textContent = D.fmtDay(D.MONTHS[from].first);
             wrap.querySelector('.ds-to').firstChild.textContent = D.fmtDay(D.MONTHS[to].last);
+            const aria = (h, min, now, hi, day) => {
+              h.setAttribute('aria-valuemin', min);
+              h.setAttribute('aria-valuemax', hi);
+              h.setAttribute('aria-valuenow', now);
+              h.setAttribute('aria-valuetext', D.fmtDay(day));
+            };
+            aria(h0, 0, from, to, D.MONTHS[from].first);
+            aria(h1, from, to, max, D.MONTHS[to].last);
           };
           place();
           const drag = (handle, which) =>
@@ -105,6 +130,21 @@
             });
           drag(h0, 0);
           drag(h1, 1);
+          const keys = (handle, which) =>
+            handle.addEventListener('keydown', e => {
+              const next = stepRange(S.from, S.to, which, e.key, max);
+              if (!next) return;
+              e.preventDefault();
+              e.stopPropagation();
+              if (next.from === S.from && next.to === S.to) return;
+              S.from = next.from;
+              S.to = next.to;
+              PBI.app.update();
+              const again = body.querySelector(which === 0 ? '.ds-h0' : '.ds-h1');
+              if (again) again.focus();
+            });
+          keys(h0, 0);
+          keys(h1, 1);
         },
         setRange(from, to) {
           PBI.S.slicers.from = from;
@@ -277,5 +317,5 @@
     ];
   }
 
-  PBI.slicers = { dateSlicer, dropdownSlicer, tileSlicer, textBox, band, rangeLabel };
+  PBI.slicers = { dateSlicer, dropdownSlicer, tileSlicer, textBox, band, rangeLabel, stepRange };
 })();
