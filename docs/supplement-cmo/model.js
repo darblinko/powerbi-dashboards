@@ -196,15 +196,18 @@ function filterRows(rows, filters, keys, extra) {
   );
 }
 
-/* One filter context function. Every visual reads its rows through it. */
+/* One filter context function. Every visual reads its rows through it.
+   Batch filters propagate to OOS records through batchId, as a Batches 1:* OOS relationship would. */
 function ctx(vid, opts) {
   const o = opts || {};
   const filters = filtersFor(vid, o.page);
   const applySel = o.selection !== false && S.selection && S.selection.source !== vid;
   const keys = applySel ? S.selection.keys : null;
+  const batches = filterRows(D.batches, filters, keys, o.where);
+  const batchIds = new Set(batches.map(b => b.id));
   return {
-    batches: filterRows(D.batches, filters, keys, o.where),
-    oos: filterRows(D.oos, filters, keys, o.where),
+    batches,
+    oos: filterRows(D.oos, filters, keys, o.where).filter(r => batchIds.has(r.batchId)),
     schedule: o.schedule ? filterRows(D.schedule, filters, keys, o.where) : []
   };
 }
