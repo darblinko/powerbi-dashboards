@@ -154,7 +154,7 @@ npx playwright install chromium
 npm run smoke
 ```
 
-`npm test` runs the data tests in `tests/data.test.mjs`. `npm run smoke` serves `docs/` on a local port, opens every report page in headless Chromium, and fails on a console error, an uncaught exception, a failed request, or a page with fewer than five rendered charts.
+`npm test` runs the data, link and model regression tests in `tests/*.test.mjs`. `npm run smoke` serves `docs/` on a local port, opens every visible report page and the three drillthrough pages in headless Chromium, and fails on a console error, an uncaught exception, a failed request, a drillthrough page that does not open, a report page with fewer populated ECharts visuals than it lays out, or a landing page figure that does not render.
 
 `npm run build:data` rewrites `docs/data.json`. `npm run build:screenshots` rewrites the dashboard screenshots in `docs/figures/`. The SVG charts in `docs/figures/` are rendered from `docs/data.json` by a chart script kept outside this repository.
 
@@ -171,11 +171,13 @@ docs/
   supplement-cmo/             style.css
   device-quality/
 tools/
-  dashboards.mjs            runs a dashboard's data.js in node:vm
+  dashboards.mjs            runs a dashboard's data.js and page scripts in node:vm
   build-data.mjs            writes docs/data.json
   screenshots.mjs           writes docs/figures/<dashboard>.png
 tests/
   data.test.mjs             row counts, determinism, data.json freshness
+  links.test.mjs            relative links in the README and pages resolve
+  <dashboard>.test.mjs      measure and interaction regression tests per dashboard
   smoke.mjs                 headless Chromium check of every report page
   static-server.mjs         static file server used by the smoke test and screenshots
 eslint.config.js            ESLint flat config
@@ -191,7 +193,7 @@ eslint.config.js            ESLint flat config
 - The report canvas is laid out for a desktop browser window and scales down. There is no mobile layout.
 - ECharts loads from cdnjs without a subresource integrity hash. The charts do not render offline.
 - Company, supplier and customer names are fictional, several of them reused from Microsoft sample data (Contoso, Fabrikam, Northwind). Product names and specification limits are invented.
-- The tests check row counts, determinism and that each page renders without errors. They do not compare chart values or layouts against Power BI.
+- The tests check row counts, determinism, selected measure values and interactions in Node.js, and that each page renders its charts without errors in Chromium. They do not compare chart values or layouts against Power BI.
 - CSS files are excluded from Prettier because the dashboard stylesheets keep one rule per line.
 
 ## License
