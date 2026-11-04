@@ -8,7 +8,7 @@ Four browser dashboards that reproduce Power BI report features in vanilla JavaS
 
 The dashboards are vanilla JavaScript reproductions of Power BI report features. Every row of data is generated in the browser from a seeded pseudo-random generator and describes fictional organizations. This project is not affiliated with or endorsed by Microsoft. Power BI is a trademark of the Microsoft group of companies.
 
-The landing page is [docs/index.html](docs/index.html). GitHub Pages serves it from `docs/` at <https://darblinko.github.io/pbi-portfolio/> once Pages is enabled for the repository.
+The landing page is [docs/index.html](docs/index.html). GitHub Pages serves it from `docs/` at <https://darblinko.github.io/powerbi-dashboards/> once Pages is enabled for the repository.
 
 ## What it does
 
@@ -137,7 +137,7 @@ The landing page also charts monthly online retailer revenue and supplement batc
 View the dashboards. This needs Python 3 and network access to cdnjs.cloudflare.com for ECharts.
 
 ```bash
-git clone https://github.com/darblinko/pbi-portfolio
+git clone https://github.com/darblinko/powerbi-dashboards
 cd pbi-portfolio
 python3 -m http.server 8000 --directory docs
 ```

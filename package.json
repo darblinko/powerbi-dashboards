@@ -7,7 +7,7 @@
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/darblinko/pbi-portfolio.git"
+    "url": "https://github.com/darblinko/powerbi-dashboards.git"
   },
   "type": "module",
   "engines": {
